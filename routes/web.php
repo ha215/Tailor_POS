@@ -51,7 +51,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'installed',UpdateM
     /* inventory */
     Route::group(['prefix' => 'inventory/'], function () {
         Route::get('product', \App\Http\Livewire\Admin\Inventory\Products::class)->name('admin.product');
-        Route::post('measurements/pdts/save', \App\Http\Livewire\Admin\Inventory\Products::class)->name('measurements.pdts.save');
+        Route::post('measurements/pdts/save', \App\Http\Livewire\Admin\Inventory\Measurements::class)->name('measurements.pdt.save');
     });
     /* online orders */
     Route::group(['prefix' => 'online-orders/'], function () {
@@ -136,7 +136,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'installed',UpdateM
         Route::get('view/{id}', \App\Http\Livewire\Admin\Customers\CustomerView::class, '__invoke')->name('admin.view_customer');
         Route::get('view/{id}/payments', \App\Http\Livewire\Admin\Customers\CustomerViewPayments::class, '__invoke')->name('admin.view_customer_payments');
         Route::get('view/{id}/measurement', \App\Http\Livewire\Admin\Customers\CustomerViewMeasurement::class, '__invoke')->name('admin.view_customer_measurement');
-        Route::get('view/{id}/discount', \App\Http\Livewire\Admin\Customers\CustomerViewPaymentDiscount::class, '__invoke')->name('admin.view_customer_discount');
+        Route::get('view/{id}/details', \App\Http\Livewire\Admin\Customers\CustomerListMeasurement::class, '__invoke')->name('admin.view_customer_details');
+        Route::get('view/{id}/discount', \App\Http\Livewire\Admin\Customers\CustomerListMeasurement::class, '__invoke')->name('admin.view_customer_discount');
         Route::get('create', \App\Http\Livewire\Admin\Customers\CustomerCreate::class, '__invoke')->name('admin.create_customer');
         Route::get('edit/{id}', \App\Http\Livewire\Admin\Customers\CustomerEdit::class, '__invoke')->name('admin.edit_customer');
     });

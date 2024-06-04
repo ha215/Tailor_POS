@@ -31,8 +31,8 @@
                 </div>
             </div>
             <div class="row gx-3">
-                @livewire('components.customer-profile', ['id' => $customer_id])
-                <div class="col-lg-8">
+               
+                <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
                             <div class="row g-2 mb-0">

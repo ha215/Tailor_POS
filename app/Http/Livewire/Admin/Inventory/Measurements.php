@@ -9,14 +9,12 @@ use Livewire\WithFileUploads;
 use Image;
 use Auth;
 use App\Models\Translation;
-use App\Models\Measurement;
 
-class Products extends Component
+class Measurements extends Component
 {
     use WithFileUploads;
     public $image,$name,$stitching_cost,$is_active=1,$search,$products,$product,$is_featured = 0,$description;
     public $editMode = false,$i=1,$item_code;
-    public $product_id,$selected_attributes,$pdtEdit = false;
 
     //render the page
     public function render()
@@ -146,13 +144,6 @@ class Products extends Component
         $this->description = $this->product->description;
         $this->item_code = $this->product->item_code;
     }
-    public function addMeasurements($id)
-    {
-        $this->pdtEdit = true;
-        $this->resetErrorBag();
-        $this->product_id = $id;
-        
-    }
 
     //Toggle product active status
     public function toggle($id)
@@ -163,24 +154,22 @@ class Products extends Component
     }
     public function saveMeasurements()
     {
-        if($this->selected_attributes) {
-            foreach($this->selected_attributes as $key => $value)
-            {
-                if($value === true)
-                {
-                    $mesurements = Measurement::create([
-                        'products_id'=>$measurement->id,
-                        'measurement_attributes_id'=>$key,
-                        'created_at'=>\Carbon\Carbon::now()
-                    ]);
-                }
-            }
-        }
+        $this->validate([
+            'name' => 'required|string|max:255',
+            'selected_attributes' => 'required|array',
+        ]);
+
+        $measurement = Measurement::updateOrCreate(
+            ['products_id' => $this->product_id],
+            ['name' => $this->name]
+        );
+
+        $measurement->attributes()->sync($this->selected_attributes);
 
         session()->flash('message', 'Measurement saved successfully.');
-        $this->emit('closemodal');
+
         // Close the modal
-        //$this->dispatchBrowserEvent('closeModal');
+        $this->dispatchBrowserEvent('closeModal');
     }
 
 }

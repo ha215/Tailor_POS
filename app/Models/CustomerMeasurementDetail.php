@@ -14,4 +14,11 @@ class CustomerMeasurementDetail extends Model
         'customer_id',
         'customer_measurement_id'
     ];
+
+    public function attributes() {
+        return $this->belongsTo(MeasurementAttribute::class,'attribute_id','id');
+    }
+    public function units() {
+        return $this->belongsTo(MeasurementAttribute::class,'attribute_id','id');
+    }
 }

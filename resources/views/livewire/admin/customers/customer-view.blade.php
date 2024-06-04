@@ -31,8 +31,8 @@
                 </div>
             </div>
             <div class="row gx-3">
-                @livewire('components.customer-profile', ['id' => $customer_id])
-                <div class="col-lg-8">
+               
+                <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
                             <div class="row g-2 mb-0">
@@ -49,9 +49,14 @@
                                         type="button"
                                         class="btn btn-nav-primary">{{ __('main.measurements') }}</a>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-auto" style="display:none;">
                                     <a href="{{ route('admin.view_customer_discount', $customer_id) }}" type="button"
                                         class="btn btn-nav-primary">{{ __('main.payment_discount') }}</a>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="{{ route('admin.view_customer_discount', $customer_id) }}"
+                                        type="button"
+                                        class="btn btn-nav-primary active">{{ __('main.measurements') }}</a>
                                 </div>
                             </div>
                         </div>

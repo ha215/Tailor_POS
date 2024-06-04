@@ -65,15 +65,13 @@
                                 <thead class="bg-light">
                                     <tr>
                                         <th class="text-primary w-table-15" scope="col">
-                                            {{ __('main.voucher_no') }}</th>
+                                            {{ __('main.nos') }}</th>
                                         <th class="text-primary w-table-20" scope="col">
-                                            {{ __('main.date') }}</th>
+                                            {{ __('main.measurements') }}</th>
                                         <th class="text-primary w-table-20" scope="col">
-                                            {{ __('main.amount') }}</th>
+                                            {{ __('main.measurement_unit') }}</th>
                                         <th class="text-primary w-table-30" scope="col">
-                                            {{ __('main.invoice_info') }}</th>
-                                        <th class="text-primary w-table-30" scope="col">
-                                            {{ __('main.payment_mode') }}</th>
+                                            {{ __('main.value') }}</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -81,50 +79,24 @@
                         <div class="table-responsive mt-0 customer-view-scroll">
                             <table class="table">
                                 <tbody>
-                                    @foreach ($payments as $row)
-                                        <tr>
+                            @php
+                            $measurementDetails = \App\Models\CustomerMeasurementDetail::where('customer_id',$customer_id)->get();
+                            @endphp
+                                    @foreach($measurementDetails as $key => $details)
+                                    <tr>
                                             <th class="w-table-15">
-                                                <div class="mb-0 ">#{{ $row->voucher_no }}</div>
+                                                <div class="mb-0 ">#{{ $key }}</div>
                                             </th>
                                             <td class="w-table-20">
-                                                <div class="mb-0">
-                                                    {{ \Carbon\Carbon::parse($row->date)->format('d/m/Y') }}</div>
-                                                <div class="mt-50 text-xs text-secondary fw-bold">
-                                                    {{ __('main.by') }}
-                                                    {{ $row->createdByPayment->name ?? '' }}</div>
+                                               {{$details->attributes['name']}}
                                             </td>
                                             <td class="w-table-20">
-                                                <div class="mb-0 fw-bolder">
-                                                    {{ getFormattedCurrency($row->paid_amount) }}</div>
+                                            {{$details->attributes->name}}
                                             </td>
                                             <td class="w-table-30">
-                                                <div class="mb-0 text-uppercase">
-                                                    @if ($row->payment_type == 1)
-                                                        {{ __('main.invoice') }}
-                                                    @endif
-                                                    @if ($row->payment_type == 2)
-                                                        {{ __('main.opening_balance') }}
-                                                    @endif
-                                                    @if ($row->payment_type == 3)
-                                                        {{ __('main.cash_receipt') }}
-                                                    @endif
-                                                </div>
-                                                <div class="mt-50 text-xs"></div>
-                                                <div class="mt-50 text-xs">
-                                                    @if ($row->payment_type == 1)
-                                                        #{{ $row->invoice->invoice_number ?? '' }}
-                                                    @endif
-                                                </div>
+                                            {{$details->value}}
                                             </td>
-                                            <td class="w-table-30">
-                                                <div class="mb-0 text-uppercase">
-                                                    {{ getPaymentMode($row->payment_mode) }}</div>
-                                                <div class="mt-50 text-xs">
-                                                    @if ($row->note != '')
-                                                        {{ __('main.ref') }} {{ $row->note }}
-                                                    @endif
-                                                </div>
-                                            </td>
+                                            
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -21,7 +21,7 @@ class CustomerViewPaymentDiscount extends Component
     //render the page
     public function render()
     {
-        return view('livewire.admin.customers.customer-view-payment-discount');
+        return view('livewire.admin.customers.customer-list-measurement');
     }
 
     //load customer data & customer's payment discounts

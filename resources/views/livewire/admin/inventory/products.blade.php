@@ -77,7 +77,7 @@
                                             
                                         </td>
                                         <td>
-                                          <a wire:click="edit({{$row->id}})" data-bs-toggle="modal" data-bs-target="#addMeasurements" class="btn btn-custom-secondary btn-sm px-2" type="button">
+                                          <a wire:click="addMeasurements({{$row->id}})" data-bs-toggle="modal" data-bs-target="#addMeasurements" class="btn btn-custom-secondary btn-sm px-2" type="button">
                                           <i data-feather="maximize-2"></i>
                                           </a>
                                         </td>
@@ -243,18 +243,24 @@
     </div>
 
     <div  class="modal fade" id="addMeasurements" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" >
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ __('main.add_measurement') }} </h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('measurements.pdts.save') }}" method="POST">
+                <form wire:submit.prevent="saveMeasurements">
                     <div class="modal-body pb-1">
                         <div class="mb-3">
                             <label class="form-label">{{ __('main.product_name') }} <span class="text-danger">*</span> </label>
-                            <input type="text" required class="form-control" placeholder="{{ __('main.enter_product_name') }}" wire:model="product_id">
-                            @error('name') <span class="error text-danger">{{ $message }}</span>@enderror
+                            @php
+                                $pdts = \App\Models\Measurement::where('id',$product_id)->latest()->get();
+                            @endphp
+                            <select wire:model="product_id" class="form-select">
+                              @foreach ($pdts as $pdt)
+                                <option value="{{ $pdt->id }}">{{ $pdt->name }}</option>
+                              @endforeach
+                            </select>
                         </div>
                        
                         <div class="row g-3">
