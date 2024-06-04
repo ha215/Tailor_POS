@@ -20,7 +20,7 @@
                                                 @foreach ($customers as $item)
                                                     <li class="list-group-item hover-custom"
                                                         wire:click="selectCustomer({{ $item->id }})">
-                                                        {{ $item->file_number }} - {{ $item->first_name }} -
+                                                        {{ $item->name }} -
                                                         {{ $item->phone_number_1 }} </li>
                                                 @endforeach
                                             </ul>

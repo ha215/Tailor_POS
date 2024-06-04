@@ -152,4 +152,24 @@ class Products extends Component
         $product->is_active = !($product->is_active);
         $product->save();
     }
+    public function saveMeasurements()
+    {
+        $this->validate([
+            'name' => 'required|string|max:255',
+            'selected_attributes' => 'required|array',
+        ]);
+
+        $measurement = Measurement::updateOrCreate(
+            ['products_id' => $this->product_id],
+            ['name' => $this->name]
+        );
+
+        $measurement->attributes()->sync($this->selected_attributes);
+
+        session()->flash('message', 'Measurement saved successfully.');
+
+        // Close the modal
+        $this->dispatchBrowserEvent('closeModal');
+    }
+
 }

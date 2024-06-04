@@ -74,13 +74,12 @@ class Invoices extends Component
             $query2 = Customer::latest();
             $query2->where('created_by',Auth::user()->id);
             $query2->where(function($query) use ($value){
-                $query->Where('file_number','like',$value.'%');
-                $query->orwhere('first_name','like','%'.$value.'%');
+                $query->orwhere('name','like','%'.$value.'%');
                 $query->orWhere('phone_number_1','like',$value.'%');
                 $query->orWhere('phone_number_2','like',$value.'%');
                
             });
-            $this->customer_results = $query2->where('is_active',1)->reorder()->orderby('file_number','ASC')->limit(8)->get();
+            $this->customer_results = $query2->where('is_active',1)->reorder()->orderby('name','ASC')->limit(8)->get();
         }
         else{
             $this->customer_results = null;
@@ -119,16 +118,8 @@ class Invoices extends Component
             'product' => $id,
         ]);
         $tax_type = getTaxType();
-        if($tax_type == 2)
-        {
-            $this->selling_price[$this->inputi] = $product->stitching_cost;
-            $itemtotallocal =  $product->stitching_cost  * (100 / (100 + $this->tax ?? 15));
-            $this->prices[$this->inputi] = number_format($itemtotallocal,2);
-        }
-        else{
-            $this->selling_price[$this->inputi] = $product->stitching_cost;
-            $this->prices[$this->inputi] = $product->stitching_cost;
-        }
+        $this->selling_price[$this->inputi] = $product->stitching_cost;
+        $this->prices[$this->inputi] = $product->stitching_cost;
         $this->quantity[$this->inputi]  = 1;
         $this->calculateTotal();
     }
@@ -221,14 +212,7 @@ class Invoices extends Component
         ]);
         $tax_type = getTaxType();
         $itemtotallocal = 0;
-        if($tax_type == 2)
-        {
-            $itemtotallocal =  $this->material_rate ;
-            $this->matrate[$this->mati] = number_format($itemtotallocal,2,'.','');
-        }
-        else{
-            $this->matrate[$this->mati] = $this->material_rate ;
-        }
+        $this->matrate[$this->mati] = $this->material_rate ;
         $this->matqty[$this->mati]  = $this->material_qty;
         $this->selected_material = null;
         $this->material_rate = null;
@@ -253,90 +237,39 @@ class Invoices extends Component
         {
             $itemtaxtotal = 0;
             $product = \App\Models\Product::find($item[0]['product']);
-            if($tax_type == 2)
-            {
-                $itemtotallocal =  ($this->selling_price[$key] * $this->quantity[$key])  * (100 / (100 + $this->tax ?? 15));
-                $itemtaxtotal +=  ($this->selling_price[$key] * $this->quantity[$key]) - $itemtotallocal ?? 0;
-                $itemtotal +=( $this->selling_price[$key] * $this->quantity[$key]);
-                $itemtaxtotal2 += $itemtaxtotal;
-                $this->taxable += $itemtotal;
-                $sub_total += $itemtotallocal;
-            }
-            else{
-                $itemtotallocal =  ($this->selling_price[$key] * $this->quantity[$key]);
-                $itemtaxtotal += $itemtotallocal * $this->tax/100;
-                $itemtotal += $itemtotallocal+$itemtaxtotal;
-                $itemtaxtotal2 += $itemtaxtotal;
-                $this->taxable += $itemtotallocal;
-            }
+            $itemtotallocal =  ($this->selling_price[$key] * $this->quantity[$key]);
+            $itemtaxtotal += $itemtotallocal;
+            $itemtotal += $itemtotallocal;
+            $itemtaxtotal2 += $itemtotallocal;
+            $this->taxable += $itemtotallocal;
         }
         foreach($this->material_items as $key => $item)
         {
             $itemtaxtotal = 0;
             $material = \App\Models\Material::find($item[0]['product']);
-            if($tax_type == 2)
-            {
-                $itemtotallocal =  ($this->matrate[$key] * $this->matqty[$key])  * (100 / (100 + $this->tax ?? 15));
-                $itemtaxtotal +=  ($this->matrate[$key] * $this->matqty[$key]) - $itemtotallocal ?? 0;
-                $itemtotal +=  ($this->matrate[$key] * $this->matqty[$key]);
-                $itemtaxtotal2 += $itemtaxtotal;
-                $this->taxable += $itemtotal;
-                $sub_total += $itemtotallocal;
-            }
-            else{
-                $itemtotallocal =  ($this->matqty[$key] * $this->matrate[$key]);
-                $itemtaxtotal += $itemtotallocal * $this->tax/100;
-                $itemtotal += $itemtotallocal+$itemtaxtotal;
-                $itemtaxtotal2 += $itemtaxtotal;
-                $this->taxable += $itemtotallocal;
-            }
+            $itemtotallocal =  ($this->matqty[$key] * $this->matrate[$key]);
+            $itemtaxtotal += $itemtotallocal;
+            $itemtotal += $itemtotallocal;
+            $itemtaxtotal2 += $itemtotallocal;
+            $this->taxable += $itemtotallocal;
         }
         if($this->discount_type == 1)
         {
-            if($tax_type == 2)
-            {
-                $this->sub_total = $this->taxable;
-                $this->taxable = $itemtotal -  $this->discount;
-                $unitprice = $this->taxable  * (100 / (100 + $this->tax ?? 15));
-                $this->taxable  = $unitprice;
-                $this->taxamount =  ($itemtotal - $this->discount) - $unitprice;
-                $this->total = $this->taxable + $this->taxamount;
-                $this->sub_total = $sub_total;
-                return 1;
-            }
-            else{
-                $this->sub_total = $this->taxable;
-                $this->taxable = $itemtotal -  $this->discount;
-                $unittax = $this->taxable * $this->tax/100;
-                $this->taxamount = $unittax;
-                $this->total = $this->taxable ;
-                return 1;
-            }
+            $this->sub_total = $this->taxable;
+            $this->taxable = $itemtotal -  $this->discount;
+            $unittax = $this->taxable * $this->tax/100;
+            $this->taxamount = $unittax;
+            $this->total = $this->taxable ;
+            return 1;
         }
         else{
-            if($tax_type == 1)
-            {
-                $this->sub_total = $this->taxable;
-                $this->taxable = $itemtotal;
-                $unittax = $this->taxable * $this->tax/100;
-                $this->taxamount = $unittax;
-                $this->total = ($this->taxable + $unittax) - $this->discount;
-                $this->sub_total = $sub_total;
-                return 1;
-            }
-            if($tax_type == 2)
-            {
-                $this->sub_total = $this->taxable;
-                $this->taxable = $itemtotal;
-                $unitprice = $this->taxable  * (100 / (100 + $this->tax ?? 15));
-                $this->taxable  = $unitprice;
-                $this->taxamount =  ($itemtotal) - $unitprice;
-    
-                $this->total = $this->taxable + $this->taxamount;
-                $this->total -= $this->discount;
-                $this->sub_total = $sub_total;
-                return 1;
-            }
+            $this->sub_total = $this->taxable;
+            $this->taxable = $itemtotal;
+            $unittax = $this->taxable * $this->tax/100;
+            $this->taxamount = $unittax;
+            $this->total = ($this->taxable + $unittax) - $this->discount;
+            $this->sub_total = $sub_total;
+            return 1;
         }
         $this->taxamount = $itemtaxtotal2;
         $this->total = $this->taxable + $this->taxamount;
@@ -344,6 +277,7 @@ class Invoices extends Component
         {
             $this->total = $this->total - $this->discount;
         }
+        $this->total = $this->total - $this->discount;
     }
     /* process while update element */
     public function updated($name,$value)
@@ -376,21 +310,17 @@ class Invoices extends Component
             $this->addError('paid_amount','Paid Amount cannot be greater than total!');
             return 0;
         }
+        $userId = Auth::id();
         $invoice = Invoice::create([
             'date' => Carbon::now(),
             'invoice_number'    => generateInvoiceNumber(),
-            'customer_name' => $this->selected_customer->first_name,
+            'customer_name' => $this->selected_customer->name,
             'customer_phone'    => $this->selected_customer->phone_number_1,
             'customer_address'  => $this->selected_customer->address,
-            'customer_file_number'  => $this->selected_customer->file_number,
             'customer_id'   => $this->selected_customer->id,
-            'salesman_id'   => $this->selected_salesman,
-            'tax_type'  => getTaxType(),
+            'salesman_id'   => $userId,
             'discount'  => $this->discount ?? 0,
             'sub_total' => $this->sub_total,
-            'tax_percentage'    => $this->tax,
-            'tax_amount'    => $this->taxamount,
-            'taxable_amount'    => $this->taxable,
             'total' => $this->total,
             'notes' => $this->notes,
             'created_by'    => Auth::user()->id,
@@ -407,19 +337,10 @@ class Invoices extends Component
             $qtycount ++;
             $itemtotallocal=0;
             $itemrate = 0;
-            if(getTaxType() == 2)
-            {
-                $itemrate =  ($this->selling_price[$key])  * (100 / (100 + $this->tax ?? 15));
-                $itemtotallocal =  ($this->selling_price[$key] * $this->quantity[$key])  * (100 / (100 + $this->tax ?? 15));
-                $itemtaxtotal +=  ($this->selling_price[$key] * $this->quantity[$key]) - $itemtotallocal ?? 0;
-                $itemtotal += ($this->selling_price[$key] * $this->quantity[$key]);
-            }
-            else{
-                $itemtotallocal =  ($this->selling_price[$key] * $this->quantity[$key]);
-                $itemrate = $this->selling_price[$key];
-                $itemtaxtotal += $itemtotallocal * $this->tax/100;
-                $itemtotal += $itemtotallocal+$itemtaxtotal;
-            }
+            $itemtotallocal =  ($this->selling_price[$key] * $this->quantity[$key]);
+            $itemrate = $this->selling_price[$key];
+            $itemtaxtotal += $itemtotallocal * $this->tax/100;
+            $itemtotal += $itemtotallocal;
             InvoiceDetail::create([
                 'invoice_id'    => $invoice->id,
                 'type'  => 1,
@@ -438,20 +359,10 @@ class Invoices extends Component
             $itemtaxtotal = 0;
             $material = \App\Models\Material::find($item[0]['product']);
             $itemrate = 0;
-            if(getTaxType() == 2)
-            {
-
-                $itemrate =  ($this->matrate[$key])  * (100 / (100 + $this->tax ?? 15));
-                $itemtotallocal =  ($this->matrate[$key] * $this->matqty[$key])  * (100 / (100 + $this->tax ?? 15));
-                $itemtaxtotal +=  ($this->matrate[$key] * $this->matqty[$key]) - $itemtotallocal ?? 0;
-                $itemtotal +=  ($this->matrate[$key] * $this->matqty[$key]);
-            }
-            else{
-                $itemtotallocal =  ($this->matqty[$key] * $this->matrate[$key]);
-                $itemrate =  $this->matrate[$key];
-                $itemtaxtotal += $itemtotallocal * $this->tax/100;
-                $itemtotal += $itemtotallocal+$itemtaxtotal;
-            }
+            $itemtotallocal =  ($this->matqty[$key] * $this->matrate[$key]);
+            $itemrate =  $this->matrate[$key];
+            $itemtaxtotal += $itemtotallocal * $this->tax/100;
+            $itemtotal += $itemtotallocal;
             InvoiceDetail::create([
                 'invoice_id'    => $invoice->id,
                 'type'  => 2,
@@ -514,19 +425,12 @@ class Invoices extends Component
         $user = Auth::user();
         $customer = Customer::create([
             'date' =>  Carbon::today(),
-            'file_number' => $this->file_number,
-            'first_name' => $this->first_name,
-            'second_name' => $this->second_name,
-            'family_name' => $this->family_name,
+            'name' => $this->first_name,
             'phone_number_1' => $this->phone_number_1,
             'phone_number_2' => $this->phone_number_2,
             'is_active' => $this->is_active??0,
             'address' => $this->address,
-            'notes' => $this->notes_c,
-            'email' => $this->email,
             'created_by' => Auth::user()->id,
-            'opening_balance'=>($this->opening_balance!="")?$this->opening_balance:0,
-            'customer_group_id'=>($this->customer_group_id!="")?$this->customer_group_id:NULL,
         ]);
         $this->dispatchBrowserEvent('alert',['type' => 'success','title' => 'Success','message' => 'Customer Created Successfully!']);
         $this->selected_customer = $customer;

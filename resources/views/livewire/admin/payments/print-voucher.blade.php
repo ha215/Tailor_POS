@@ -26,9 +26,7 @@
                                     <p class="mb-0"><small
                                             class="font-weight-bold text-gray">{{ __('main.voucher_no') }}:
                                             {{ $site['company_cr_number'] ?? 'No CR' }}</small></p>
-                                    <p class="mb-0"><small
-                                            class="font-weight-bold text-gray">{{ isset($site['default_tax_name']) ? $site['default_tax_name'] : 'GST' }}:
-                                            {{ $site['company_tax_registration'] ?? 'No Tax' }}</small></p>
+                                   
                                     <p><small class="font-weight-bold text-gray">{{ __('main.phone_number') }}:
                                             {{ Auth::user()->phone }}</small></p>
                                 </div>
@@ -46,7 +44,7 @@
                                     <tbody>
                                         <tr>
                                             <td colspan="8">{{ __('print.received_from') }}:
-                                                <strong>{{ $bill->customer->first_name ?? '' }}<strong>
+                                                <strong>{{ $bill->customer->name ?? '' }}<strong>
                                             </td>
                                         </tr>
                                         <tr>

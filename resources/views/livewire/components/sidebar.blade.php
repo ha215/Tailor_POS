@@ -59,52 +59,7 @@
                                 <span>{{ __('main.status_screen') }}</span>
                             </a>
                         </li>
-                        <li class="sidebar-main-title"  wire:ignore>
-                            <div class="text-primary text-uppercase text-xs fw-bold">
-                                {{ __('main.front_end') }}
-                            </div>
-                        </li>
-                        <li class=""  wire:ignore>
-                            <a class="nav-link menu-title link-nav  {{ Request::is('admin/online-customers*') ? 'active' : '' }}" href="{{route('admin.online-customers')}}"><i data-feather="users"></i>
-                                <span>{{ __('main.online_customers') }}</span>
-                            </a>
-                        </li>
-                        <li class=""  wire:ignore>
-                            <a class="nav-link menu-title link-nav  {{ Request::is('admin/online-orders*') ? 'active' : '' }}" href="{{route('admin.online-orders')}}"><i data-feather="printer"></i>
-                                <span>{{ __('main.online_orders') }}</span>
-                            </a>
-                        </li>
-                        <li class=""  wire:ignore>
-                            <a class="nav-link menu-title link-nav  {{ Request::is('admin/online-appointments') ? 'active' : '' }}" href="{{route('admin.online-appointments')}}"><i data-feather="phone"></i>
-                                <span>{{ __('main.appointments') }}</span>
-                            </a>
-                        </li>
-                     
-                        @if((Auth::user()->user_type==2))
-
-                        <li class=""  wire:ignore>
-                            <a class="nav-link menu-title link-nav  {{ Request::is('admin/sliders') ? 'active' : '' }}" href="{{route('admin.sliders')}}"><i data-feather="image"></i>
-                                <span>{{ __('main.sliders') }}</span>
-                            </a>
-                        </li>
-                        <li class=""  wire:ignore>
-                            <a class="nav-link menu-title link-nav  {{ Request::is('admin/offers') ? 'active' : '' }}" href="{{route('admin.offers')}}"><i data-feather="award"></i>
-                                <span>{{ __('main.offers') }}</span>
-                            </a>
-                        </li>
                        
-                         @endif
-                         <li class=""  wire:ignore>
-                            <a class="nav-link menu-title link-nav  {{ Request::is('admin/contact-messages*') ? 'active' : '' }}" href="{{route('admin.contact-messages')}}"><i data-feather="message-square"></i>
-                                <span>{{ __('main.messages') }}</span>
-                            </a>
-                        </li>
-                        <li  wire:ignore class="dropdown"><a class="nav-link menu-title {{ Request::is('admin/pages*') ? 'active' : '' }}" href="javascript:void(0)"><i data-feather="file-text"></i><span>{{ __('main.pages') }} </span></a>
-                            <ul class="nav-submenu menu-content">
-                                <li><a class="{{ Request::is('admin/pages/privacy-policy') ? 'active' : '' }}" href="{{route('admin.privacy-policy')}}">{{ __('main.privacy_policy') }}</a></li>
-                                <li><a class="{{ Request::is('admin/pages/terms*') ? 'active' : '' }}" href="{{route('admin.terms-conditions')}}">{{ __('main.terms_conditions') }} </a></li>
-                            </ul>
-                        </li>
                         <li class="sidebar-main-title mb-0"  wire:ignore>
                             <div class="text-primary text-uppercase text-xs fw-bold">
                                 {{ __('main.manage') }}

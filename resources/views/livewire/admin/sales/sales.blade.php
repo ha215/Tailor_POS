@@ -76,28 +76,19 @@
                                                         </svg>
                                                     </div>
                                                     <div class="ms-2 mb-0 fw-bold">
-                                                        <div class="mb-50">{{ $item->customer_file_number }}</div>
                                                         <div class="mb-0">{{ $item->customer_name }}</div>
+                                                        <div class="mb-50">{{ $item->customer_phone }}</div>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="d-flex align-items-center mb-50 ledger-text">
-                                                    <div class="me-1">{{ __('main.taxable') }}:</div>
-                                                    <div class="fw-bolder">
-                                                        {{ getFormattedCurrency($item->taxable_amount) }}</div>
-                                                </div>
                                                 <div class="d-flex align-items-center mb-50 ledger-text">
                                                     <div class="me-1">{{ __('main.discount') }}:
                                                     </div>
                                                     <div class="fw-bolder">{{ getFormattedCurrency($item->discount) }}
                                                     </div>
                                                 </div>
-                                                <div class="d-flex align-items-center mb-0 ledger-text">
-                                                    <div class="me-1">{{ __('main.tax') }}:</div>
-                                                    <div class="fw-bolder">
-                                                        {{ getFormattedCurrency($item->tax_amount) }}</div>
-                                                </div>
+                
                                             </td>
                                             <td>
                                                 <div class="d-flex align-items-center mb-50 ledger-text">

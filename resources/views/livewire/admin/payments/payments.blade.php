@@ -32,7 +32,7 @@
                                         <th class="text-primary" scope="col">{{ __('main.date') }} </th>
                                         <th class="text-primary" scope="col">{{ __('main.customer') }}</th>
                                         <th class="text-primary" scope="col">{{ __('main.amount') }}</th>
-                                        <th class="text-primary" scope="col">{{ __('main.towards') }}</th>
+                                        <th class="text-primary" scope="col">{{ __('main.invoice_no') }}</th>
                                         <th class="text-primary" scope="col">{{ __('main.payment_mode') }} </th>
                                         <th class="text-primary" scope="col">{{ __('main.actions') }} </th>
                                     </tr>
@@ -64,10 +64,11 @@
                                                         </svg>
                                                     </div>
                                                     <div class="ms-2 mb-0 fw-bold">
-                                                        <div class="mb-50">{{ $item->customer->file_number ?? '' }}
+                                                        <div class="mb-0">{{ $item->customer->name ?? '' }}
                                                         </div>
-                                                        <div class="mb-0">{{ $item->customer->first_name ?? '' }}
+                                                        <div class="mb-50">{{ $item->customer->phone_number_1 ?? '' }}
                                                         </div>
+                                                        
                                                     </div>
                                                 </div>
                                             </td>

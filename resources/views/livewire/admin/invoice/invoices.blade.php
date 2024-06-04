@@ -11,14 +11,14 @@
                                         <div class="row g-3">
                                             <div class="col">
                                                 <input type="text" class="form-control"
-                                                    placeholder="@if ($selected_customer) {{ $selected_customer->first_name }} @else {{ __('main.search_customer_shrtcut') }} @endif"
+                                                    placeholder="@if ($selected_customer) {{ $selected_customer->name }} @else {{ __('main.search_customer_shrtcut') }} @endif"
                                                     wire:model="customer_query" />
                                                 @if ($customer_results && count($customer_results) > 0)
                                                     <ul class="list-group position-absolute ">
                                                         @foreach ($customer_results as $item)
                                                             <li class="list-group-item hover-custom"
                                                                 wire:click="selectCustomer({{ $item->id }})">
-                                                                {{ $item->file_number }} - {{ $item->first_name }} -
+                                                                 {{ $item->name }} -
                                                                 {{ $item->phone_number_1 }} </li>
                                                         @endforeach
                                                     </ul>
@@ -49,7 +49,7 @@
                                     <div class="col-lg-3">
                                         <div class="row g-2 align-items-center">
                                             <div class="col">
-                                                <select required class="form-select" wire:model="selected_salesman">
+                                                <select required class="form-select" wire:model="selected_salesman" style="display:none;">
                                                     <option value="">
                                                         {{ __('main.select_salesman') }}
                                                     </option>
@@ -79,10 +79,6 @@
                                             <th class="text-primary w-table-12" scope="col">
                                                 {{ __('main.qty') }}</th>
                                             <th class="text-primary w-table-10" scope="col">
-                                                {{ __('main.tax') }} %</th>
-                                            <th class="text-primary w-table-15" scope="col">
-                                                {{ __('main.tax_amount') }}</th>
-                                            <th class="text-primary w-table-10" scope="col">
                                                 {{ __('main.total') }}</th>
                                             <th class="text-primary w-table-5" scope="col"></th>
                                         </tr>
@@ -100,20 +96,10 @@
                                                 @php
                                                     $product = \App\Models\Product::find($item[0]['product']);
                                                     $currentcount++;
-                                                    $itemtaxtotal = 0;
-                                                    $itemtotal = 0;
-                                                    $localrate = 0;
-                                                    if (getTaxType() == 2) {
-                                                        $localrate = $selling_price[$key] * (100 / (100 + $tax ?? 15));
-                                                        $itemtotallocal = $selling_price[$key] * $quantity[$key] * (100 / (100 + $tax ?? 15));
-                                                        $itemtaxtotal = $selling_price[$key] * $quantity[$key] - $itemtotallocal ?? 0;
-                                                        $itemtotal = $selling_price[$key] * $quantity[$key];
-                                                    } else {
-                                                        $itemtotallocal = $selling_price[$key] * $quantity[$key];
-                                                        $localrate = $selling_price[$key];
-                                                        $itemtaxtotal = ($itemtotallocal * $tax) / 100;
-                                                        $itemtotal = $itemtotallocal + $itemtaxtotal;
-                                                    }
+                                                    $itemtotallocal = $selling_price[$key] * $quantity[$key];
+                                                    $localrate = $selling_price[$key];
+                                                    $itemtaxtotal = $itemtotallocal;
+                                                    $itemtotal = $itemtotallocal;
                                                 @endphp
                                                 <th class="w-table-5" scope="row">{{ $currentcount }}</th>
 
@@ -137,12 +123,6 @@
                                                     </div>
                                                 </td>
                                                 <td class="w-table-10">
-                                                    {{ $tax }}
-                                                </td>
-                                                <td class="w-table-15">
-                                                    {{ getFormattedCurrency($itemtaxtotal) }}
-                                                </td>
-                                                <td class="w-table-10">
                                                     {{ getFormattedCurrency($itemtotal) }}
                                                 </td>
                                                 <td class="w-table-5">
@@ -156,20 +136,10 @@
                                             @php
                                                 $currentcount++;
                                                 $material = \App\Models\Material::find($item[0]['product']);
-                                                $itemtaxtotal = 0;
-                                                $itemtotal = 0;
-                                                $itemrate = 0;
-                                                if (getTaxType() == 2) {
-                                                    $itemrate = $matrate[$key] * (100 / (100 + $tax ?? 15));
-                                                    $itemtotallocal = $matrate[$key] * $matqty[$key] * (100 / (100 + $tax ?? 15));
-                                                    $itemtaxtotal = $matrate[$key] * $matqty[$key] - $itemtotallocal ?? 0;
-                                                    $itemtotal = $matrate[$key] * $matqty[$key];
-                                                } else {
-                                                    $itemtotallocal = $matqty[$key] * $matrate[$key];
-                                                    $itemrate = $itemtotallocal;
-                                                    $itemtaxtotal = ($itemtotallocal * $tax) / 100;
-                                                    $itemtotal = $itemtotallocal + $itemtaxtotal;
-                                                }
+                                                $itemtotallocal = $matqty[$key] * $matrate[$key];
+                                                $itemrate = $itemtotallocal;
+                                                $itemtaxtotal =  $itemrate;
+                                                $itemtotal = $itemrate;
                                             @endphp
                                             <tr>
                                                 <th class="w-table-5" scope="row">{{ $currentcount }}</th>
@@ -193,12 +163,6 @@
                                                             wire:click="changeqty({{ $key }})"> <i
                                                                 class="fa fa-pencil" aria-hidden="true"></i></span>
                                                     </div>
-                                                </td>
-                                                <td class="w-table-10">
-                                                    {{ $tax }}
-                                                </td>
-                                                <td class="w-table-15">
-                                                    {{ getFormattedCurrency($itemtaxtotal) }}
                                                 </td>
                                                 <td class="w-table-10">
                                                     {{ getFormattedCurrency($itemtotal) }}
@@ -248,22 +212,13 @@
                                             <div class="col">{{ __('main.discount') }}:</div>
                                             <div class="col-auto">{{ getFormattedCurrency($discount) }}</div>
                                         </div>
-                                        <div class="row mb-50 align-items-center">
-                                            <div class="col">{{ __('main.taxable_amount') }}:
-                                            </div>
-                                            <div class="col-auto">{{ getFormattedCurrency($taxable) }}</div>
-                                        </div>
-                                        <div class="row mb-50 align-items-center">
-                                            <div class="col">{{ __('main.tax_amount') }}
-                                                ({{ $tax }}%):</div>
-                                            <div class="col-auto">{{ getFormattedCurrency($taxamount) }}</div>
-                                        </div>
+                                        
                                         <hr class="bg-light mt-2 mb-1">
                                         <div class="row align-items-center mb-2 mt-1">
                                             <div class="col fw-bold">{{ __('main.gross_total') }}:
                                             </div>
                                             <div class="col-auto fw-bolder text-secondary">
-                                                {{ getFormattedCurrency($total) }}</div>
+                                                {{ getFormattedCurrency($sub_total - $discount) }}</div>
                                         </div>
                                         <div class="row align-items-center gx-3 mt-2">
                                             <div class="col-6">
@@ -320,7 +275,7 @@
                         <div class="card mt-2">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-12" style="display:none;">
                                         <button data-bs-toggle="modal" 
                                             data-bs-target="#addmaterial" class="btn btn-secondary w-100"
                                             type="button">{{ __('main.add_materials_in_invoice') }}</button>
@@ -359,8 +314,8 @@
                                                     </svg>
                                                 </div>
                                                 <div class="ms-2 mb-0 fw-bold">
-                                                    <div class="mb-50">{{ $selected_customer->file_number }}</div>
-                                                    <div class="mb-0">{{ $selected_customer->first_name }}</div>
+                                                    <div class="mb-50"></div>
+                                                    <div class="mb-0">{{ $selected_customer->name }}</div>
                                                     <div class="mb-0">{{ getCountryCode() }}
                                                         {{ $selected_customer->phone_number_1 }}</div>
                                                 </div>
@@ -389,16 +344,7 @@
                                         <div class="col">{{ __('main.discount') }}:</div>
                                         <div class="col-auto">{{ getFormattedCurrency($discount) }}</div>
                                     </div>
-                                    <div class="row mb-50 align-items-center">
-                                        <div class="col">{{ __('main.taxable_amount') }}:
-                                        </div>
-                                        <div class="col-auto">{{ getFormattedCurrency($taxable) }}</div>
-                                    </div>
-                                    <div class="row mb-50 align-items-center">
-                                        <div class="col">{{ __('main.tax_amount') }}
-                                            ({{ $tax }}%):</div>
-                                        <div class="col-auto">{{ getFormattedCurrency($taxamount) }}</div>
-                                    </div>
+                                   
                                     <hr class="bg-light mt-1 mb-1">
                                     <div class="row align-items-center mb-2">
                                         <div class="col fw-bold">{{ __('main.gross_total') }}:

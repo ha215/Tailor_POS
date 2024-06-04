@@ -92,12 +92,11 @@ class Ledgers extends Component
                 $query2->where('created_by',Auth::user()->id);
             }
             $this->customers = $query2->where(function($query) use ($value){
-                $query->where('file_number','like',$value.'%');
-                $query->orwhere('first_name','like','%'.$value.'%');
+                $query->orwhere('name','like','%'.$value.'%');
                 $query->orWhere('phone_number_1','like',$value.'%');
                 $query->orWhere('phone_number_2','like',$value.'%');
             })
-            ->where('is_active',1)->reorder()->orderby('file_number','ASC')->limit(8)->get();
+            ->where('is_active',1)->reorder()->orderby('name','ASC')->limit(8)->get();
             $this->downloadValue=$value;
         }
         else{

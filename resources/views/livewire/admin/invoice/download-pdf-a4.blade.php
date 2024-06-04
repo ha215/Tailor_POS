@@ -202,10 +202,7 @@
                         <span class="mr-50">Date :</span>
                         <span>{{ \Carbon\Carbon::parse($invoice->date)->format('d/m/Y g:i A') }}</span>
                     </p>
-                    <p class="mb-0">
-                        <span class="mr-50">{{__('main.file_no')}} :</span>
-                        <span>{{ $invoice->customer_file_number }}</span>
-                    </p>
+                   
                 </td>
             </tr>
             <tr>
@@ -264,16 +261,7 @@
                                             @endif</span>
                                     </div>
                                 </td>
-                                <td style="border-right: 1px solid #94939c; padding: .35rem .75rem .35rem .75rem; vertical-align: middle; font-size: .55rem; font-weight: 500;">
-                                    <div class="m-0">
-                                        <span class=""> {{$invoice->tax_percentage }} % </span>
-                                    </div>
-                                </td>
-                                <td style="border-right: 1px solid #94939c; padding: .35rem .75rem .35rem .75rem; vertical-align: middle; font-size: .55rem; font-weight: 500;">
-                                    <div class="m-0">
-                                        <span class="">{{ getFormattedCurrency($row->tax_amount) }} </span>
-                                    </div>
-                                </td>
+            
                                 <td style="text-align: right; padding: .35rem .75rem .35rem .75rem; vertical-align: middle; font-size: .55rem; font-weight: 500;">
                                     <div class="m-0">
                                         <span class="">{{ getFormattedCurrency($row->total, 2) }}</span>
@@ -297,16 +285,6 @@
                                 <td style="width: 12%; padding: .35rem .75rem .35rem .75rem; vertical-align: middle; text-transform: uppercase; font-size: 1rem; border-right: 1px solid #94939c;" scope="col">
                                 </td>
                                 <td style="width: 13%; padding: .35rem .75rem .35rem .75rem; vertical-align: middle; text-transform: uppercase; font-size: 1rem; border-right: 1px solid #94939c;" scope="col">
-                                </td>
-                                <td style="width: 13%; padding: .35rem .75rem .35rem .75rem; vertical-align: middle; text-transform: uppercase; font-size: .8rem; border-right: 1px solid #94939c;" scope="col">
-                                    <div class="m-0">
-                                        <span class="">{{ getFormattedCurrency($invoice->tax_amount) }}</span>
-                                    </div>
-                                </td>
-                                <td style="width: 15%; padding: .35rem .75rem .35rem .75rem; vertical-align: middle; text-transform: uppercase; font-size: .8rem; text-align: right;" scope="col">
-                                    <div class="m-0">
-                                        <span class="">{{ getFormattedCurrency($invoice->taxable_amount) }}</span>
-                                    </div>
                                 </td>
                             </tr>
                         </tfoot>
@@ -336,14 +314,7 @@
                                 <td class="border-none-left col" style="width:70%;"> <b>Discount</b> </td>
                                 <td class="border-none1 col" style="width:30%;">{{ getFormattedCurrency($invoice->discount) }}</td>
                             </tr>
-                            <tr class="tag-text">
-                                <td class="border-none-left col" style="width:70%;"> <b>Taxable Amount</b> </td>
-                                <td class="border-none1 col" style="width:30%;">{{ getFormattedCurrency($invoice->taxable_amount) }}</td>
-                            </tr>
-                            <tr class="tag-text">
-                                <td class="border-none-left col" style="width:70%;"> <b>Total {{isset($site['default_tax_name']) ? $site['default_tax_name'] : 'GST'}} ({{ $invoice->tax_percentage }}%)</b> </td>
-                                <td class="border-none1 col" style="width:30%;">{{ getFormattedCurrency($invoice->tax_amount) }}</td>
-                            </tr>
+                           
                             <tr class="tag-text">
                                 @php
                                 $paid = \App\Models\InvoicePayment::where('invoice_id', $invoice->id)->sum('paid_amount');

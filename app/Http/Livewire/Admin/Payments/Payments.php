@@ -31,7 +31,6 @@ class Payments extends Component
                 $query2->orwhere('voucher_no','like','%'.$search.'%');
                 $query2->orwhereHas('customer',function($query3) use ($search)
                 {
-                    $query3->where('file_number','like',$search.'%');
                     $query3->orwhere('phone_number_1','like',$search.'%');
                     $query3->orwhere('phone_number_2','like',$search.'%');
                 });

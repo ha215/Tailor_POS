@@ -28,7 +28,7 @@
                                                     @if($customers && count($customers) > 0)
                                                     <ul class="list-group position-absolute ">
                                                         @foreach ($customers as $item)
-                                                            <li class="list-group-item hover-custom" wire:click="selectCustomer({{$item->id}})">{{$item->file_number}} - {{$item->first_name}} - {{$item->phone_number_1}} </li>
+                                                            <li class="list-group-item hover-custom" wire:click="selectCustomer({{$item->id}})">{{$item->name}} - {{$item->phone_number_1}} </li>
                                                         @endforeach
                                                     </ul>
                                                     @elseif($customer_query!='' && count($customers) == 0 )
@@ -103,11 +103,8 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user mb-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                                         </div>
                                                         <div class="ms-2">
-                                                            <div class="mb-1">
-                                                                <span>{{$selected_customer->file_number??""}}</span>
-                                                            </div>
                                                             <div class="mb-2 fw-bolder">
-                                                                <span>{{$selected_customer->first_name??""}}</span>
+                                                                <span>{{$selected_customer->name??""}}</span>
                                                             </div>
                                                             <div class="mb-0 text-sm">
                                                                 <span>{{getCountryCode()}} {{$selected_customer->phone_number_1??""}}</span>

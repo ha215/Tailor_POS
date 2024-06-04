@@ -43,13 +43,15 @@
                                         <span>{{ __('main.time') }}:</span>
                                         <span>{{ \Carbon\Carbon::parse($invoice->date)->format('h:i A') }}</span>
                                     </div>
+                                    <div class="mb-0" style="display:none;">
                                     @if ($invoice->salesman)
-                                    <div class="mb-0">
+                                    
                                         <span>{{ __('main.salesman') }}:</span>
                                         <span>{{ Str::limit($invoice->salesman->name ?? '', 15, '..') }}</span>
-                                    </div>
+                                    
                                     @endif
-                                    <div class="mb-2 text-secondary">
+                                    </div>
+                                    <div class="mb-2 text-secondary" style="display:none;">
                                         <span>{{ __('main.by') }}
                                             {{ $invoice->createdBy->name ?? '' }}</span>
                                     </div>
@@ -69,10 +71,6 @@
                                         </th>
                                         <th class="text-primary" scope="col">{{ __('main.rate') }}</th>
                                         <th class="text-primary" scope="col">{{ __('main.qty') }}</th>
-                                        <th class="text-primary" scope="col">{{ __('main.tax') }} %</th>
-                                        <th class="text-primary" scope="col">
-                                            {{ __('main.tax_amount') }}
-                                        </th>
                                         <th class="text-primary" scope="col">{{ __('main.total') }}
                                         </th>
                                     </tr>
@@ -93,12 +91,6 @@
                                             @endif
                                         </td>
                                         <td>
-                                            {{ $invoice->tax_percentage }}
-                                        </td>
-                                        <td>
-                                            {{ getFormattedCurrency($item->tax_amount) }}
-                                        </td>
-                                        <td>
                                             {{ getFormattedCurrency($item->total) }}
                                         </td>
                                     </tr>
@@ -116,9 +108,6 @@
                                                 <i class="mb-0" data-feather="user"></i>
                                             </div>
                                             <div class="ms-2">
-                                                <div class="mb-50">
-                                                    <span>{{ $invoice->customer_file_number }}</span>
-                                                </div>
                                                 <div class="mb-0 fw-bolder">
                                                     <span>{{ $invoice->customer_name }}</span>
                                                 </div>
@@ -139,17 +128,6 @@
                                     <div class="row mb-50 align-items-center">
                                         <div class="col">{{ __('main.discount') }}:</div>
                                         <div class="col-auto">{{ getFormattedCurrency($invoice->discount) }}</div>
-                                    </div>
-                                    <div class="row mb-50 align-items-center">
-                                        <div class="col">{{ __('main.taxable_amount') }}:
-                                        </div>
-                                        <div class="col-auto">{{ getFormattedCurrency($invoice->taxable_amount) }}
-                                        </div>
-                                    </div>
-                                    <div class="row mb-50 align-items-center">
-                                        <div class="col">{{ __('main.tax_amount') }}
-                                            ({{ $invoice->tax_percentage }}%):</div>
-                                        <div class="col-auto">{{ getFormattedCurrency($invoice->tax_amount) }}</div>
                                     </div>
                                     <hr class="bg-light mt-2 mb-1">
                                     <div class="row align-items-center mb-2 mt-1">

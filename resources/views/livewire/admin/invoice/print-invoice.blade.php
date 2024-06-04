@@ -34,9 +34,9 @@
                         <div class="invoice-title-center">
                             <h4 class="heading">{{__('print.thermal_title')}}</h4>
                         </div>
-                        <div class="row-data b-none mb-1-px">
+                        <div class="row-data b-none mb-1-px" style="display:none;">
                             <div class="item-info b-none mt-10" >
-                                <h5 class="item-title"><b>{{isset($site['default_tax_name']) ? $site['default_tax_name'] : 'GST'}} No</b> :</h5>
+                               
                             </div>
                             <h5 class="my-5">{{ $site['company_tax_registration'] ?? 'No Tax' }}</h5>
                         </div>
@@ -54,9 +54,9 @@
                         </div>
                         <div class="row-data b-none">
                             <div class="item-info b-none mt-10" >
-                                <h5 class="item-title"><b>{{__('main.file_no')}}</b> : </h5>
+                                <h5 class="item-title"><b>{{__('main.customer_info')}}</b> :</h5>
                             </div>
-                            <h5 class="my-5">{{ $invoice->customer_file_number }}</h5>
+                            <h5 class="my-5">{{ $invoice->customer_name }}</h5>
                         </div>
                         <div class="invoice-title text-align-end">
                             <h6 class="heading1">{{__('print.item')}}</h6>
@@ -104,20 +104,6 @@
                                 <h5 class="item-title"> <b>{{__('main.discount')}}</b>: </h5>
                             </div>
                             <h5 class="my-5">{{ getFormattedCurrency($invoice->discount) }}</h5>
-                        </div>
-                        <div class="row-data mb-5">
-                            <div class="item-info">
-                                <h5 class="item-title"> <b>{{__('main.taxable_amount')}}</b> : </h5>
-                            </div>
-                            <h5 class="my-5">
-                                {{ getFormattedCurrency($invoice->taxable_amount) }}
-                            </h5>
-                        </div>
-                        <div class="row-data">
-                            <div class="item-info">
-                                <h5 class="item-title"> <b>{{__('main.total')}} {{isset($site['default_tax_name']) ? $site['default_tax_name'] : 'GST'}} ({{ $invoice->tax_percentage }}%)</b> :</h5>
-                            </div>
-                            <h5 class="my-5">{{ getFormattedCurrency($invoice->tax_amount) }}</h5>
                         </div>
                         <div class="row-data">
                             <div class="item-info">

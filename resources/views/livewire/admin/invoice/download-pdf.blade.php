@@ -123,8 +123,8 @@
                             <td class="w-table-15 border-none1">{{ \Carbon\Carbon::parse($invoice->date)->format('d/m/Y g:i A') }}</td>
                         </tr>
                         <tr class="tag-text">
-                            <td class="w-table-10 border-none"> File No</b> : </td>
-                            <td class="w-table-15 border-none1">{{ $invoice->customer_file_number }}</td>
+                            <td class="w-table-10 border-none"> Invoice To</b> : </td>
+                            <td class="w-table-15 border-none1">{{ $invoice->customer_name }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -173,14 +173,6 @@
                         <tr class="tag-text">
                             <td class="w-table-10 border-none"> <b>Discount</b> </td>
                             <td class="w-table-15 border-none1">{{ getFormattedCurrency($invoice->discount) }}</td>
-                        </tr>
-                        <tr class="tag-text">
-                            <td class="w-table-10 border-none"> <b>Taxable Amount</b> </td>
-                            <td class="w-table-15 border-none1">{{ getFormattedCurrency($invoice->taxable_amount) }}</td>
-                        </tr>
-                        <tr class="tag-text">
-                            <td class="w-table-10 border-none"> <b> Total {{isset($site['default_tax_name']) ? $site['default_tax_name'] : 'GST'}} ({{ $invoice->tax_percentage }}%)</b> </td>
-                            <td class="w-table-15 border-none1">{{ getFormattedCurrency($invoice->tax_amount) }}</td>
                         </tr>
                         <tr class="tag-text">
                             <td class="w-table-10 border-none"> <b>Total </b>  </td>
