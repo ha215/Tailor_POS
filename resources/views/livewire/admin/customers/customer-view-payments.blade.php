@@ -47,7 +47,7 @@
                                 <div class="col-auto">
                                     <a href="{{ route('admin.view_customer_measurement', $customer_id) }}"
                                         type="button"
-                                        class="btn btn-nav-primary">{{ __('main.measurements') }}</a>
+                                        class="btn btn-nav-primary">{{ __('main.add_measurement') }}</a>
                                 </div>
                                 <div class="col-auto" style="display:none;">
                                     <a href="{{ route('admin.view_customer_discount', $customer_id) }}" type="button"
@@ -56,7 +56,7 @@
                                 <div class="col-auto">
                                     <a href="{{ route('admin.view_customer_discount', $customer_id) }}"
                                         type="button"
-                                        class="btn btn-nav-primary active">{{ __('main.measurements') }}</a>
+                                        class="btn btn-nav-primary">{{ __('main.measurements') }}</a>
                                 </div>
                             </div>
                         </div>

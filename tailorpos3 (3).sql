@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 04, 2024 at 10:40 AM
+-- Generation Time: Jun 06, 2024 at 09:16 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -126,6 +126,14 @@ CREATE TABLE `customer_measurements` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `customer_measurements`
+--
+
+INSERT INTO `customer_measurements` (`id`, `customer_id`, `measurement_id`, `unit`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 4, 1, 2, '', '2024-06-04 19:41:47', '2024-06-05 07:03:08'),
+(2, 3, 1, 1, '', '2024-06-04 19:44:51', '2024-06-04 19:44:51');
+
 -- --------------------------------------------------------
 
 --
@@ -134,13 +142,27 @@ CREATE TABLE `customer_measurements` (
 
 CREATE TABLE `customer_measurement_details` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `customer_measurement_id` bigint(20) UNSIGNED DEFAULT NULL,
   `customer_id` bigint(20) UNSIGNED DEFAULT NULL,
   `attribute_id` bigint(20) UNSIGNED DEFAULT NULL,
   `value` double(20,2) DEFAULT NULL,
+  `unit` int(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `customer_measurement_details`
+--
+
+INSERT INTO `customer_measurement_details` (`id`, `customer_id`, `attribute_id`, `value`, `unit`, `created_at`, `updated_at`) VALUES
+(5, 3, 1, 34.00, 3, '2024-06-05 06:48:51', '2024-06-05 06:48:51'),
+(6, 3, 2, 20.00, 4, '2024-06-05 06:48:52', '2024-06-05 06:48:52'),
+(7, 3, 3, 12.00, 5, '2024-06-05 06:48:52', '2024-06-05 06:48:52'),
+(10, 4, 1, 67.00, 3, '2024-06-05 07:29:15', '2024-06-05 07:50:17'),
+(11, 4, 2, 45.00, 1, '2024-06-05 07:29:16', '2024-06-05 07:50:17'),
+(12, 4, 3, 49.00, 2, '2024-06-05 07:29:16', '2024-06-05 07:50:17'),
+(16, 2, 3, 80.00, 1, '2024-06-05 07:51:31', '2024-06-05 08:19:34'),
+(17, 2, 2, 14.00, 4, '2024-06-05 08:19:18', '2024-06-05 08:19:18');
 
 -- --------------------------------------------------------
 
@@ -379,7 +401,9 @@ INSERT INTO `master_settings` (`id`, `master_title`, `master_value`, `is_active`
 (24, 'staffs', '0', 1, NULL, NULL),
 (25, 'allow_branches_to_create_products', '1', 1, NULL, NULL),
 (26, 'allow_branches_to_create_materials', '1', 1, NULL, NULL),
-(27, 'frontend_enabled', '1', 1, NULL, NULL);
+(27, 'frontend_enabled', '1', 1, NULL, NULL),
+(28, 'company_mobile', '66778899', 1, NULL, NULL),
+(29, 'company_email', 'pos@gmail.com', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -415,7 +439,8 @@ INSERT INTO `materials` (`id`, `name`, `price`, `unit`, `opening_stock`, `is_act
 CREATE TABLE `measurements` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `products_id` int(100) NOT NULL,
-  `name` varchar(191) NOT NULL,
+  `measurement_attributes_id` int(191) NOT NULL,
+  `name` varchar(191) DEFAULT NULL,
   `is_active` int(11) NOT NULL DEFAULT 0,
   `created_by` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -426,8 +451,8 @@ CREATE TABLE `measurements` (
 -- Dumping data for table `measurements`
 --
 
-INSERT INTO `measurements` (`id`, `products_id`, `name`, `is_active`, `created_by`, `created_at`, `updated_at`) VALUES
-(1, 1, 'en', 1, 1, '2024-05-29 17:45:17', '2024-05-29 17:45:17');
+INSERT INTO `measurements` (`id`, `products_id`, `measurement_attributes_id`, `name`, `is_active`, `created_by`, `created_at`, `updated_at`) VALUES
+(1, 1, 0, 'width', 1, 1, '2024-05-29 17:45:17', '2024-05-29 17:45:17');
 
 -- --------------------------------------------------------
 
@@ -449,8 +474,9 @@ CREATE TABLE `measurement_attributes` (
 --
 
 INSERT INTO `measurement_attributes` (`id`, `name`, `is_active`, `created_by`, `created_at`, `updated_at`) VALUES
-(1, 'asasa', 1, NULL, NULL, NULL),
-(2, 'Length', 1, 1, '2024-06-02 06:48:16', '2024-06-02 06:48:16');
+(1, 'width', 1, NULL, NULL, '2024-06-06 07:13:07'),
+(2, 'Length', 1, 1, '2024-06-02 06:48:16', '2024-06-02 06:48:16'),
+(3, 'height', 1, 1, '2024-06-05 06:47:42', '2024-06-05 06:47:42');
 
 -- --------------------------------------------------------
 
@@ -1389,13 +1415,13 @@ ALTER TABLE `customer_groups`
 -- AUTO_INCREMENT for table `customer_measurements`
 --
 ALTER TABLE `customer_measurements`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `customer_measurement_details`
 --
 ALTER TABLE `customer_measurement_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `customer_payment_discounts`
@@ -1449,7 +1475,7 @@ ALTER TABLE `invoice_payments`
 -- AUTO_INCREMENT for table `master_settings`
 --
 ALTER TABLE `master_settings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `materials`
@@ -1467,7 +1493,7 @@ ALTER TABLE `measurements`
 -- AUTO_INCREMENT for table `measurement_attributes`
 --
 ALTER TABLE `measurement_attributes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `measurement_details`

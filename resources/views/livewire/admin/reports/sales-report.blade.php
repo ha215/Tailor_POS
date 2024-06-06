@@ -26,7 +26,7 @@
                                     </div>
                                 </div>
                                 @if (Auth::user()->user_type == 2)
-                                    <div class="col-3">
+                                    <div class="col-3" style="display:none;">
                                         <div class="mb-0">
                                             <label class="form-label">{{ __('main.branch') }}</label>
                                             <select required class="form-select" wire:model="branch">
@@ -50,15 +50,11 @@
                                         {{ __('main.invoice') }} #</th>
                                     <th class="text-primary w-table-20" scope="col">
                                         {{ __('main.customer') }}</th>
-                                    <th class="text-primary w-table-15" scope="col">
-                                        {{ __('main.taxable_amount') }}</th>
                                     <th class="text-primary w-table-10" scope="col">
                                         {{ __('main.discount') }}</th>
-                                    <th class="text-primary w-table-10" scope="col">
-                                        {{ __('main.tax_amount') }}</th>
                                     <th class="text-primary w-table-15" scope="col">
                                         {{ __('main.gross_total') }}</th>
-                                    <th class="text-primary w-table-10" scope="col">
+                                    <th class="text-primary w-table-10" scope="col" style="display:none;">
                                         {{ __('main.branch') }}</th>
                                 </thead>
                             </table>
@@ -72,15 +68,12 @@
                                                 {{ Carbon\Carbon::parse($item->date)->format('d/m/Y') }}</td>
                                             <td class="w-table-10">#{{ $item->invoice_number }}</td>
                                             <td class="w-table-20">
-                                                <span class="me-1">[{{ $item->customer_file_number ?? '' }}]</span>
                                                 <span>{{ $item->customer_name ?? '' }}</span>
-                                            </td>
-                                            <td class="w-table-15">{{ getFormattedCurrency($item->taxable_amount) }}
+                                                 <span class="me-1">[{{ $item->customer_phone ?? '' }}]</span>
                                             </td>
                                             <td class="w-table-10">{{ getFormattedCurrency($item->discount) }}</td>
-                                            <td class="w-table-10">{{ getFormattedCurrency($item->tax_amount) }}</td>
                                             <td class="w-table-15">{{ getFormattedCurrency($item->total) }}</td>
-                                            <td class="w-table-10">
+                                            <td class="w-table-10" style="display:none;>
                                                 <span
                                                     class="badge bg-secondary text-uppercase">{{ $item->createdBy->name ?? '' }}</span>
                                             </td>
@@ -110,13 +103,6 @@
                                         <div class="fw-bold">{{ __('main.total_discount') }}:
                                         </div>
                                         <div class="fw-bold">{{ getFormattedCurrency($invoices->sum('discount')) }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-12">
-                                    <div class="">
-                                        <div class="fw-bold">{{ __('main.total_tax') }}:</div>
-                                        <div class="fw-bold">{{ getFormattedCurrency($invoices->sum('tax_amount')) }}
                                         </div>
                                     </div>
                                 </div>

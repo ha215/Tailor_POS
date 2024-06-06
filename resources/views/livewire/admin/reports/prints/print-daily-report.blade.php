@@ -32,9 +32,9 @@
                 </h5>
                 <p class="mb-0 text-xxs text-center">{{ \Carbon\Carbon::now()->format('d/m/Y h:i A') }}</p>
             </div>
-            <div class="col-12">
-                <div class="row d-flex justify-content-between  mt-3">
-                    <div class="col-4">
+            <div class="col-12" >
+                <div class="row d-flex justify-content-between  mt-3" style="display:none;">
+                    <div class="col-4" style="display:none;">
                         <p class="text-sm p-0 m-0">{{ $lang->data['date'] ?? 'Date' }}:
                             {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
                         </p>
@@ -60,7 +60,7 @@
                             <table class="table table-bordered">
                                 <thead class="bg-light">
                                     <th class="text-primary text-xs" scope="col">Invoice No</th>
-                                    <th class="text-primary text-xs" scope="col">File No.</th>
+                                    <th class="text-primary text-xs" scope="col">Customer</th>
                                     <th class="text-primary text-xs" scope="col">Qty</th>
                                     <th class="text-primary text-xs" scope="col">Amount</th>
                                     <th class="text-primary text-xs" scope="col">Payment</th>
@@ -77,7 +77,7 @@
                                                 <div class="mb-0   text-xs">#{{ $item->invoice_number }}</div>
                                             </td>
                                             <td>
-                                                <div class="mb-0 text-xs">{{ $item->customer_file_number }}</div>
+                                                <div class="mb-0 text-xs">{{ $item->customer_name }}</div>
                                             </td>
                                             <td>
                                                 @php

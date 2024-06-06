@@ -76,7 +76,7 @@
           {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</p>
                 
         </div>
-        <div class="">
+        <div class="" style="display:none;">
             <p style="font-size: .7rem !important;"> 
             @if($branch != '')
                 {{$lang->data['branch'] ?? 'Branch'}}: 
@@ -97,7 +97,7 @@
             <table class="table table-bordered" width="100%" cellpadding="0">
                 <thead class="bg-light">
                     <th class="text-primary text-xs" scope="">Invoice No</th>
-                    <th class="text-primary text-xs" scope="">File No.</th>
+                    <th class="text-primary text-xs" scope="">Customer</th>
                     <th class="text-primary text-xs" scope="">Qty</th>
                     <th class="text-primary text-xs" scope="">Amount</th>
                     <th class="text-primary text-xs" scope="">Payment</th>
@@ -115,7 +115,7 @@
 
                         </td>
                         <td>
-                            <div class="mb-0 text-xs">{{$item->customer_file_number}}</div>
+                            <div class="mb-0 text-xs">{{$item->customer_name}}</div>
                         </td>
                         <td >
                             @php

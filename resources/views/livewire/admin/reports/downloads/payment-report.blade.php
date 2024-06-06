@@ -53,14 +53,7 @@
                 $payments = $payments->orderBy('voucher_no','asc')->get();
         @endphp
         <h3 class="fw-500 text-dark">Customer Payment Report</h3>
-        @if($branch != '')
-           @php
-           $branchUser = \App\Models\User::where('id',$branch)->first();
-           @endphp
-           <h3>[{{
-            $branchUser->name;
-           }}]</h3>
-        @endif
+        
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
                 <td class="col"> <label>{{$lang->data['start_date'] ?? 'Start Date'}}: </label>
@@ -92,8 +85,9 @@
                     <td style="width: 8%">#{{$item->voucher_no}}</td>
                     <td class="w-table-15">{{$item->date->format('d/m/Y')}}</td>
                     <td class="w-table-25">
-                        <span class="me-1">[{{$item->customer->file_number ?? ''}}]</span>
-                        <span>{{$item->customer->first_name ?? ''}}</span>
+                        <span>{{$item->customer->name ?? ''}}</span>
+                        <span class="me-1">[{{$item->customer->phone_number_1 ?? ''}}]</span>
+                        
                     </td>
                     <td class="w-table-20">{{getFormattedCurrency($item->paid_amount)}}</td>
                     <td class="w-table-20"><span class="text-uppercase">{{getPaymentMode($item->payment_mode)}}</span></td>

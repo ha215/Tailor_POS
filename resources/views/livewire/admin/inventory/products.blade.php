@@ -31,7 +31,6 @@
                                         <th class="text-primary" scope="col">{{ __('main.product_name') }}</th>
                                         <th class="text-primary" scope="col">{{ __('main.stitching_cost') }}</th>
                                         <th class="text-primary" scope="col">{{ __('main.status') }} </th>
-                                        <th class="text-primary" scope="col">{{ __('main.measurements') }} </th>
                                         <th class="text-primary" scope="col">{{ __('main.actions') }} </th>
                                     </tr>
                                 </thead>
@@ -75,11 +74,6 @@
                                             @endif
 
                                             
-                                        </td>
-                                        <td>
-                                          <a wire:click="addMeasurements({{$row->id}})" data-bs-toggle="modal" data-bs-target="#addMeasurements" class="btn btn-custom-secondary btn-sm px-2" type="button">
-                                          <i data-feather="maximize-2"></i>
-                                          </a>
                                         </td>
                                         <td>
                                             @if(Auth::user()->user_type == 3)
@@ -242,48 +236,5 @@
         </div>
     </div>
 
-    <div  class="modal fade" id="addMeasurements" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" >
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">{{ __('main.add_measurement') }} </h5>
-                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form wire:submit.prevent="saveMeasurements">
-                    <div class="modal-body pb-1">
-                        <div class="mb-3">
-                            <label class="form-label">{{ __('main.product_name') }} <span class="text-danger">*</span> </label>
-                            @php
-                                $pdts = \App\Models\Measurement::where('id',$product_id)->latest()->get();
-                            @endphp
-                            <select wire:model="product_id" class="form-select">
-                              @foreach ($pdts as $pdt)
-                                <option value="{{ $pdt->id }}">{{ $pdt->name }}</option>
-                              @endforeach
-                            </select>
-                        </div>
-                       
-                        <div class="row g-3">
-                            @php
-                                $attributes = \App\Models\MeasurementAttribute::where('is_active',1)->latest()->get();
-                            @endphp
-                            @foreach($attributes as $row)
-                                <div class="col-lg-2 col-12">
-                                    <div class="mb-0">
-                                        <label class="d-block" for="attri{{ $row->id }}">
-                                            <input class="checkbox_animated"  id="attri{{ $row->id }}" type="checkbox" wire:model="selected_attributes.{{$row->id}}"/> {{$row->name}}
-                                        </label>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">{{ __('main.cancel') }}</button>
-                        <button class="btn btn-primary" type="submit" >{{ __('main.submit') }}</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    
 </div>

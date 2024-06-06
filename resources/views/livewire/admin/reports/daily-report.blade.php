@@ -18,7 +18,7 @@
                                     </div>
                                 </div>
                                 @if (Auth::user()->user_type == 2)
-                                    <div class="col-3">
+                                    <div class="col-3" style="display:none;">
                                         <div class="mb-0">
                                             <label class="form-label">{{ __('main.branch') }}</label>
                                             <select required class="form-select" wire:model="branch">
@@ -43,7 +43,7 @@
                                 <thead class="bg-light">
                                     <th class="text-primary" scope="col">
                                         {{ __('main.invoice_no') }}</th>
-                                    <th class="text-primary" scope="col">{{ __('main.file_no') }}
+                                    <th class="text-primary" scope="col">{{ __('main.customer') }}
                                     </th>
                                     <th class="text-primary" scope="col">{{ __('main.qty') }}</th>
                                     <th class="text-primary" scope="col">{{ __('main.amount') }}</th>
@@ -63,7 +63,7 @@
                                                 <div class="mb-0 fw-bold">#{{ $item->invoice_number }}</div>
                                             </td>
                                             <td>
-                                                <div class="mb-0 ">{{ $item->customer_file_number }}</div>
+                                                <div class="mb-0 ">{{ $item->customer_name }}</div>
                                             </td>
                                             <td>
                                                 @php

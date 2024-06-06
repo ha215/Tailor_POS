@@ -5,34 +5,38 @@ use App\Http\Middleware\LanguageMiddleware;
 use App\Http\Middleware\UpdateMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/login', \App\Http\Livewire\Login::class, '__invoke')->middleware(['installed',UpdateMiddleware::class])->name('login');
-
-/* login */
-Route::group([ 'middleware' => ['installed',UpdateMiddleware::class,FrontendLoginPageMiddleware::class,LanguageMiddleware::class]], function () {
-    Route::get('/', \App\Http\Livewire\Frontend\Home::class, '__invoke')->name('frontend');
-    Route::get('/offers', \App\Http\Livewire\Frontend\Offers::class, '__invoke')->name('frontend.offers');
-    Route::get('/customer-login', \App\Http\Livewire\Frontend\Login::class, '__invoke')->name('frontend.login');
-    Route::get('/sign-up', \App\Http\Livewire\Frontend\Signup::class, '__invoke')->name('frontend.sign-up');
-    Route::get('/terms', \App\Http\Livewire\Frontend\Pages\TermsAndConditions::class, '__invoke')->name('frontend.terms-conditions');
-    Route::get('/privacy-policy', \App\Http\Livewire\Frontend\Pages\PrivacyPolicy::class, '__invoke')->name('frontend.privacy-policy');
-    Route::get('/contact-us', \App\Http\Livewire\Frontend\Pages\ContactUs::class, '__invoke')->name('frontend.contact-us');
-    
-    Route::group(['prefix' => 'profile','middleware' => 'customer'], function () {
-        Route::get('/update', \App\Http\Livewire\Frontend\Profile\EditProfile::class, '__invoke')->name('frontend.edit-profile');
-        Route::get('/orders', \App\Http\Livewire\Frontend\Profile\MyOrders::class, '__invoke')->name('frontend.my-orders');
-        Route::get('/create-appointment', \App\Http\Livewire\Frontend\Appointment\CreateAppointment::class, '__invoke')->name('frontend.create-appointment');
-    });
-
-    Route::group(['prefix' => 'orders','middleware' => 'customer'], function () {
-        Route::get('/place-order', \App\Http\Livewire\Frontend\Orders\PlaceOrder::class, '__invoke')->name('frontend.place-order');
-        Route::get('/measurements', \App\Http\Livewire\Frontend\Orders\CollectMeasurements::class, '__invoke')->name('frontend.collect-measurements');
-    });
+Route::get('/login', \App\Http\Livewire\Login::class, '__invoke')->name('login');
+Route::get('/', function () {
+    return redirect()->route('login');
 });
+/* login */
+// Route::group([ 'middleware' => ['installed',UpdateMiddleware::class,FrontendLoginPageMiddleware::class,LanguageMiddleware::class]], function () {
+   
+
+//     //Route::get('/', \App\Http\Livewire\Frontend\Home::class, '__invoke')->name('frontend');
+//     Route::get('/offers', \App\Http\Livewire\Frontend\Offers::class, '__invoke')->name('frontend.offers');
+//     Route::get('/customer-login', \App\Http\Livewire\Frontend\Login::class, '__invoke')->name('frontend.login');
+//     Route::get('/sign-up', \App\Http\Livewire\Frontend\Signup::class, '__invoke')->name('frontend.sign-up');
+//     Route::get('/terms', \App\Http\Livewire\Frontend\Pages\TermsAndConditions::class, '__invoke')->name('frontend.terms-conditions');
+//     Route::get('/privacy-policy', \App\Http\Livewire\Frontend\Pages\PrivacyPolicy::class, '__invoke')->name('frontend.privacy-policy');
+//     Route::get('/contact-us', \App\Http\Livewire\Frontend\Pages\ContactUs::class, '__invoke')->name('frontend.contact-us');
+    
+//     Route::group(['prefix' => 'profile','middleware' => 'customer'], function () {
+//         Route::get('/update', \App\Http\Livewire\Frontend\Profile\EditProfile::class, '__invoke')->name('frontend.edit-profile');
+//         Route::get('/orders', \App\Http\Livewire\Frontend\Profile\MyOrders::class, '__invoke')->name('frontend.my-orders');
+//         Route::get('/create-appointment', \App\Http\Livewire\Frontend\Appointment\CreateAppointment::class, '__invoke')->name('frontend.create-appointment');
+//     });
+
+//     Route::group(['prefix' => 'orders','middleware' => 'customer'], function () {
+//         Route::get('/place-order', \App\Http\Livewire\Frontend\Orders\PlaceOrder::class, '__invoke')->name('frontend.place-order');
+//         Route::get('/measurements', \App\Http\Livewire\Frontend\Orders\CollectMeasurements::class, '__invoke')->name('frontend.collect-measurements');
+//     });
+// });
 
 /* installer */
-Route::get('/install', \App\Http\Livewire\Installer::class, '__invoke')->name('installer');
-/* updater */
-Route::get('/update', \App\Http\Livewire\Updater::class, '__invoke')->name('updater');
+// Route::get('/install', \App\Http\Livewire\Installer::class, '__invoke')->name('installer');
+// /* updater */
+// Route::get('/update', \App\Http\Livewire\Updater::class, '__invoke')->name('updater');
 /* reset password */
 Route::get('/reset-password/{token}', \App\Http\Livewire\ForgetPassword::class, '__invoke')->middleware(['installed',UpdateMiddleware::class])->name('reset_password');
 /* admin section */
@@ -47,12 +51,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'installed',UpdateM
         Route::get('financial-year', \App\Http\Livewire\Admin\Settings\FinancialYearSettings::class)->name('admin.financial_year');
         Route::get('master', \App\Http\Livewire\Admin\Settings\MasterSettings::class)->name('admin.master-settings');
         Route::get('mail', \App\Http\Livewire\Admin\Settings\MailSettings::class)->name('admin.mail-settings');
-    });
+});
+
     /* inventory */
     Route::group(['prefix' => 'inventory/'], function () {
-        Route::get('product', \App\Http\Livewire\Admin\Inventory\Products::class)->name('admin.product');
-        Route::post('measurements/pdts/save', \App\Http\Livewire\Admin\Inventory\Measurements::class)->name('measurements.pdt.save');
+    Route::get('product', \App\Http\Livewire\Admin\Inventory\Products::class)->name('admin.product');
     });
+
     /* online orders */
     Route::group(['prefix' => 'online-orders/'], function () {
         Route::get('', \App\Http\Livewire\Admin\OnlineOrders\OnlineOrders::class)->name('admin.online-orders');

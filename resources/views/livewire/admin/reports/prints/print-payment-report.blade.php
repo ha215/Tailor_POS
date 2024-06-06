@@ -33,15 +33,7 @@
                             {{ \Carbon\Carbon::parse($start_date)->format('d/m/Y') }}
                         </p>
 
-                        @if ($branch != '')
-                            <p class="text-xs">{{ $lang->data['branch'] ?? 'Branch' }}:
-                                {{ \App\Models\User::find($branch)->name ?? '' }}
-                            </p>
-                        @else
-                            <p class="text-xs">{{ $lang->data['branch'] ?? 'Branch' }}:
-                                All Branches
-                            </p>
-                        @endif
+                        
                     </div>
                     <div class="col-4">
                         <p class="text-xs ">{{ $lang->data['end_date'] ?? 'End Date' }}:
@@ -78,8 +70,9 @@
                                             <td class="w-table-8">#{{ $item->voucher_no }}</td>
                                             <td class="w-table-15">{{ $item->date->format('d/m/Y') }}</td>
                                             <td class="w-table-25">
-                                                <span class="me-1">[{{ $item->customer->file_number ?? '' }}]</span>
-                                                <span>{{ $item->customer->first_name ?? '' }}</span>
+                                                <span>{{ $item->customer->name ?? '' }}</span>
+                                                <span class="me-1">[{{ $item->customer->phone_number_1 ?? '' }}]</span>
+                                                
                                             </td>
                                             <td class="w-table-20">{{ getFormattedCurrency($item->paid_amount) }}</td>
                                             <td class="w-table-20"><span

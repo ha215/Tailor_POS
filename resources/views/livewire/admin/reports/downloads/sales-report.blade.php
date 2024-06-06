@@ -73,11 +73,9 @@
                     <th class="text-primary w-table-10" scope="col">Date</th>
                     <th class="text-primary w-table-10" scope="col">Invoice #</th>
                     <th class="text-primary w-table-20" scope="col">Customer</th>
-                    <th class="text-primary w-table-15" scope="col">Taxable Amount</th>
                     <th class="text-primary w-table-10" scope="col">Discount</th>
-                    <th class="text-primary w-table-10" scope="col">Tax Amount</th>
                     <th class="text-primary w-table-15" scope="col">Gross Total</th>
-                    <th class="text-primary w-table-10" scope="col">Branch</th>
+                    <th class="text-primary w-table-10" scope="col">User</th>
                 </tr>
             </thead>
             <tbody>
@@ -86,12 +84,10 @@
                     <td class="w-table-10">{{Carbon\Carbon::parse($item->date)->format('d/m/Y')}}</td>
                     <td class="w-table-10">#{{$item->invoice_number}}</td>
                     <td class="w-table-20">
-                        <span class="me-1">[{{$item->customer_file_number ?? ''}}]</span>
                         <span>{{$item->customer_name ?? ''}}</span>
+                        <span class="me-1">[{{$item->customer_phone ?? ''}}]</span>
                     </td>
-                    <td class="w-table-15">{{getFormattedCurrency($item->taxable_amount)}}</td>
                     <td class="w-table-10">{{getFormattedCurrency($item->discount)}}</td>
-                    <td class="w-table-10">{{getFormattedCurrency($item->tax_amount)}}</td>
                     <td class="w-table-15">{{getFormattedCurrency($item->total)}}</td>
                     <td class="w-table-10">
                         <span class="badge bg-secondary text-uppercase">{{$item->createdBy->name ?? ''}}</span>
@@ -115,10 +111,7 @@
                     <span
                         class="text-sm text-dark ms-2 fw-600 mb-0">{{getFormattedCurrency($invoices->sum('discount'))}}</span>
                 </td>
-                <td class="col"> <span class="text-sm mb-0 fw-500">Total Tax:</span>
-                    <span
-                        class="text-sm text-dark ms-2 fw-600 mb-0">{{getFormattedCurrency($invoices->sum('tax_amount'))}}</span>
-                </td>
+                
             </tr>
         </table>
     </body>

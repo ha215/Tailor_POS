@@ -32,15 +32,7 @@
                         <p class="text-xs">{{ $lang->data['start_date'] ?? 'Start Date' }}:
                             {{ \Carbon\Carbon::parse($start_date)->format('d/m/Y') }}
                         </p>
-                        @if ($branch != '')
-                            <p class="text-xs">{{ $lang->data['branch'] ?? 'Branch' }}:
-                                {{ \App\Models\User::find($branch)->name ?? '' }}
-                            </p>
-                        @else
-                            <p class="text-xs">{{ $lang->data['branch'] ?? 'Branch' }}:
-                                All Branches
-                            </p>
-                        @endif
+                        
                     </div>
                     <div class="col-4">
                         <p class=" text-xs ">{{ $lang->data['end_date'] ?? 'End Date' }}:
@@ -58,11 +50,9 @@
                                     <th class="text-dark" scope="col">Date</th>
                                     <th class="text-dark" scope="col">Invoice #</th>
                                     <th class="text-dark" scope="col">Customer</th>
-                                    <th class="text-dark" scope="col">Taxable Amount</th>
                                     <th class="text-dark" scope="col">Discount</th>
-                                    <th class="text-dark" scope="col">Tax Amount</th>
                                     <th class="text-dark" scope="col">Gross Total</th>
-                                    <th class="text-dark" scope="col">Branch</th>
+                                    
                                 </thead>
                                 <tbody>
                                     @foreach ($invoices as $item)
@@ -70,17 +60,13 @@
                                             <td>{{ Carbon\Carbon::parse($item->date)->format('d/m/Y') }}</td>
                                             <td>#{{ $item->invoice_number }}</td>
                                             <td>
-                                                <span class="me-1">[{{ $item->customer_file_number ?? '' }}]</span>
                                                 <span>{{ $item->customer_name ?? '' }}</span>
+                                                <span class="me-1">[{{ $item->customer_phone ?? '' }}]</span>
+                                                
                                             </td>
-                                            <td>{{ getFormattedCurrency($item->taxable_amount) }}</td>
                                             <td>{{ getFormattedCurrency($item->discount) }}</td>
-                                            <td>{{ getFormattedCurrency($item->tax_amount) }}</td>
                                             <td>{{ getFormattedCurrency($item->total) }}</td>
-                                            <td>
-                                                <span
-                                                    class="badge bg-dark text-white text-uppercase">{{ $item->createdBy->name ?? '' }}</span>
-                                            </td>
+                                           
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -108,13 +94,7 @@
                                             {{ getFormattedCurrency($invoices->sum('discount')) }}</div>
                                     </div>
                                 </div>
-                                <div class="col-2">
-                                    <div class="">
-                                        <div class="fw-bold text-xs">Total Tax:</div>
-                                        <div class="fw-bold text-xs">
-                                            {{ getFormattedCurrency($invoices->sum('tax_amount')) }}</div>
-                                    </div>
-                                </div>
+                               
                             </div>
                         </div>
                     </div>

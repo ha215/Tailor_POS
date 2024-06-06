@@ -47,7 +47,7 @@
                                 <div class="col-auto">
                                     <a href="{{ route('admin.view_customer_measurement', $customer_id) }}"
                                         type="button"
-                                        class="btn btn-nav-primary active">{{ __('main.measurements') }}</a>
+                                        class="btn btn-nav-primary active">{{ __('main.add_measurement') }}</a>
                                 </div>
                                 <div class="col-auto" style="display:none;">
                                     <a href="{{ route('admin.view_customer_discount', $customer_id) }}" type="button"
@@ -56,7 +56,7 @@
                                 <div class="col-auto">
                                     <a href="{{ route('admin.view_customer_discount', $customer_id) }}"
                                         type="button"
-                                        class="btn btn-nav-primary active">{{ __('main.measurements') }}</a>
+                                        class="btn btn-nav-primary">{{ __('main.measurements') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -64,12 +64,12 @@
                             $attributes = \App\Models\MeasurementAttribute::where('is_active',1)->latest()->get();
                         @endphp
                         <div class="card-body pb-0">
-                            <div class="row gx-3 mb-4">
+                            <div class="row gx-3 mb-4" style="display:none;">
                                 <div class="col-lg-6">
                                     <label
                                         class="form-label">{{ __('main.select_product_type') }}
                                         <span class="text-danger">*</span></label>
-                                    <select required class="form-select" wire:model="type">
+                                    <select  class="form-select" wire:model="type">
                                         <option value="">
                                             {{ __('main.select_an_option') }}</option>
                                         @foreach ($measurements as $item)
@@ -88,7 +88,7 @@
                                         <select required class="form-select" wire:model="unit">
                                             <option value="">{{ __('main.select_unit') }}
                                             </option>
-                                            <option value="1">{{ __('main.inches ') }}</option>
+                                            <option value="1">{{ __('main.inches') }}</option>
                                             <option value="2">{{ __('main.cm') }} </option>
                                             <option value="3">{{ __('main.mtr') }}</option>
                                             <option value="4">{{ __('main.yrd') }}</option>
@@ -101,7 +101,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="translation-add-scroll">
+                        <div class="translation-add-scroll" >
                             <div class="card-body pt-0">
                                 <div class="row g-3">
                                     
@@ -111,27 +111,36 @@
                                                 <div class="mb-0">
                                                     <div class="input-group">
                                                         <span
-                                                            class="input-group-text col-6">{{ $item->attribute->name ?? '' }}</span>
+                                                            class="input-group-text col-6">{{ $item->name ?? '' }}</span>
                                                         <input class="form-control col-6" type="number"
                                                             placeholder="{{ __('main.enter_value') }}"
                                                             wire:model="userattributes.{{ $item->id }}" />
-                                                    </div>
+                                                        
+                                                        </div>
                                                     @error('userattributes.' . $item->id)
                                                         <span class="text-danger">The {{ $item->attribute->name ?? '' }}
                                                             field is required</span>
                                                     @enderror
                                                 </div>
                                             </div>
+                                            <div class="col-lg-3" >
+                                        
+                                        <select  class="form-select" wire:model="unit.{{ $item->id }}">
+                                            <option value="">{{ __('main.select_unit') }}
+                                            </option>
+                                            <option value="1">{{ __('main.inches') }}</option>
+                                            <option value="2">{{ __('main.cm') }} </option>
+                                            <option value="3">{{ __('main.mtr') }}</option>
+                                            <option value="4">{{ __('main.yrd') }}</option>
+                                            <option value="5">{{ __('main.ft') }}</option>
+                                        </select>
+                                        @error('unit')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                            
                                         @endforeach
-                                        <div class="col-lg-12 col-12">
-                                            <div class="mb-0">
-                                                <label class="form-label">{{ __('main.notes') }}</label>
-                                                <textarea class="form-control" placeholder="{{ __('main.enter_notes') }}" wire:model="notes"> </textarea>
-                                                @error('notes')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                        
                                     @endif
                                 </div>
                             </div>

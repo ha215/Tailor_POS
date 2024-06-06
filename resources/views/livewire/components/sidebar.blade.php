@@ -40,7 +40,7 @@
                             </a>
                         </li>
                         @if(Auth::user()->user_type == 2)
-                        <li  wire:ignore class="dropdown"><a class="nav-link menu-title {{ Request::is('admin/expense*') ? 'active' : '' }}" href="javascript:void(0)"><i data-feather="trending-down"></i><span>{{ __('main.expense') }} </span></a>
+                        <li  wire:ignore class="dropdown" style="display:none;"><a class="nav-link menu-title {{ Request::is('admin/expense*') ? 'active' : '' }}" href="javascript:void(0)"><i data-feather="trending-down"></i><span>{{ __('main.expense') }} </span></a>
                             <ul class="nav-submenu menu-content">
                                 <li><a class="{{ Request::is('admin/expense') ? 'active' : '' }}" href="{{route('admin.expenses')}}">{{ __('main.expense_list') }}</a></li>
                                 <li><a class="{{ Request::is('admin/expense/heads*') ? 'active' : '' }}" href="{{route('admin.expense_heads')}}">{{ __('main.expense_heads') }} </a></li>
@@ -54,7 +54,7 @@
                             </a>
                         </li>
                         @endif
-                        <li class=""  wire:ignore>
+                        <li class="" style="display:none;"  wire:ignore>
                             <a class="nav-link menu-title link-nav  {{ Request::is('admin/status-screen') ? 'active' : '' }}" href="{{route('admin.status_screen')}}"><i data-feather="monitor"></i>
                                 <span>{{ __('main.status_screen') }}</span>
                             </a>
@@ -65,12 +65,25 @@
                                 {{ __('main.manage') }}
                             </div>
                         </li>
-
-                        <li  wire:ignore class="dropdown {{ Request::is('admin/customer*') ? 'show' : '' }}"><a class="nav-link menu-title {{ Request::is('admin/customer*') ? 'active' : '' }}" href="javascript:void(0)"><i data-feather="users"></i><span>{{ __('main.customers') }} </span></a>
-                            <ul class="nav-submenu menu-content">
-                                <li><a class="{{ Request::is('admin/customers*') ? 'active' : '' }}" href="{{route('admin.customers')}}">{{ __('main.customers_list') }} </a></li>
-                                <li><a class="{{ Request::is('admin/customer-groups*') ? 'active' : '' }}" href="{{route('admin.customer_groups')}}">{{ __('main.customer_groups') }}</a></li> 
-                            </ul>
+                        @if((Auth::user()->user_type==2))
+                        <li  wire:ignore class="">
+                            <a class="nav-link menu-title link-nav {{ Request::is('admin/inventory/product') ? 'active' : '' }}" href="{{route('admin.product')}}"><i data-feather="archive"></i>
+                                <span>{{ __('main.products') }} </span>
+                            </a>
+                         </li>
+                         @endif
+                         @if((Auth::user()->user_type==2))
+                        <li  wire:ignore class="">
+                            <a class="nav-link menu-title link-nav {{ Request::is('admin/settings/measurement') ? 'active' : '' }}" href="{{route('admin.measurement_settings')}}"><i data-feather="maximize-2"></i>
+                                <span>{{ __('main.measurements') }} </span>
+                            </a>
+                         </li>
+                         @endif
+                         
+                        <li  wire:ignore class="">
+                            <a class="nav-link menu-title link-nav {{ Request::is('admin/customer*') ? 'active' : '' }}" href="{{route('admin.customers')}}"><i data-feather="users"></i>
+                                <span>{{ __('main.customers') }} </span>
+                            </a>
                         </li>
                         <li  wire:ignore class="">
                             <a class="nav-link menu-title link-nav {{ Request::is('admin/payments*') ? 'active' : '' }}" href="{{route('admin.payments')}}"><i data-feather="dollar-sign"></i>
@@ -90,13 +103,7 @@
                             </ul>
                         </li>
                         @endif
-                        @if((Auth::user()->user_type==2))
-                        <li  wire:ignore class="">
-                            <a class="nav-link menu-title link-nav {{ Request::is('admin/inventory/product') ? 'active' : '' }}" href="{{route('admin.product')}}"><i data-feather="archive"></i>
-                                <span>{{ __('main.products') }} </span>
-                            </a>
-                         </li>
-                         @endif
+                        
                        
                          @if(getBrachProductCreatePriviledge()==1)
                          @if((Auth::user()->user_type==3))
@@ -108,7 +115,7 @@
                          @endif
                          @endif
                         @if(Auth::user()->user_type==2)
-                        <li  wire:ignore class="">
+                        <li  wire:ignore class="" style="display:none;">
                             <a class="nav-link menu-title link-nav {{ Request::is('admin/measurements*') ? 'active' : '' }}" href="{{route('admin.measurements')}}"><i data-feather="maximize-2"></i>
                                 <span>{{ __('main.measurements') }}</span>
                             </a>
@@ -162,17 +169,17 @@
                                 <li><a class="{{ Request::is('admin/reports/daily') ? 'active' : '' }}" href="{{route('admin.report.daily')}}" >{{ __('main.daily_sales_report') }}</a></li>
                                 <li><a class="{{ Request::is('admin/reports/sales') ? 'active' : '' }}" href="{{route('admin.report.sales')}}">{{ __('main.sales_report') }}</a></li>
                                 <li><a class="{{ Request::is('admin/reports/payments') ? 'active' : '' }}" href="{{route('admin.report.payments')}}">{{ __('main.payment_report') }}</a></li>
-                                <li><a class="{{ Request::is('admin/reports/expense') ? 'active' : '' }}" href="{{route('admin.report.expense')}}">{{ __('main.expense_report') }}</a></li>
-                                <li><a class="{{ Request::is('admin/reports/sales-return') ? 'active' : '' }}" href="{{route('admin.report.sales_return')}}">{{ __('main.sales_return_report') }}</a></li>
+                                <li style="display:none;"><a class="{{ Request::is('admin/reports/expense') ? 'active' : '' }}" href="{{route('admin.report.expense')}}">{{ __('main.expense_report') }}</a></li>
+                                <li style="display:none;"><a class="{{ Request::is('admin/reports/sales-return') ? 'active' : '' }}" href="{{route('admin.report.sales_return')}}">{{ __('main.sales_return_report') }}</a></li>
                                 <li><a class="{{ Request::is('admin/reports/day-wise') ? 'active' : '' }}" href="{{route('admin.report.daywise')}}">{{ __('main.day_wise') }}</a></li>
                                 @if(Auth::user()->user_type==2)
-                                <li><a class="{{ Request::is('admin/reports/purchase') ? 'active' : '' }}" href="{{route('admin.report.purchase')}}">{{ __('main.purchase_report') }}</a></li>
-                                <li><a class="{{ Request::is('admin/reports/purchase-payment') ? 'active' : '' }}" href="{{route('admin.report.purchase_payment')}}">{{ __('main.purchase_payments') }}</a></li>
-                                <li><a class="{{ Request::is('admin/reports/stock') ? 'active' : '' }}" href="{{route('admin.report.stock')}}">{{ __('main.stock_report') }}</a></li>
+                                <li style="display:none;"><a class="{{ Request::is('admin/reports/purchase') ? 'active' : '' }}" href="{{route('admin.report.purchase')}}">{{ __('main.purchase_report') }}</a></li>
+                                <li style="display:none;"><a class="{{ Request::is('admin/reports/purchase-payment') ? 'active' : '' }}" href="{{route('admin.report.purchase_payment')}}">{{ __('main.purchase_payments') }}</a></li>
+                                <li style="display:none;"><a class="{{ Request::is('admin/reports/stock') ? 'active' : '' }}" href="{{route('admin.report.stock')}}">{{ __('main.stock_report') }}</a></li>
                                 @endif
-                                <li><a class="{{ Request::is('admin/reports/stock-branch') ? 'active' : '' }}" href="{{route('admin.report.stock_branch')}}">{{ __('main.branch_stock_report') }}</a></li>
-                                <li><a class="{{ Request::is('admin/reports/income') ? 'active' : '' }}" href="{{route('admin.report.income')}}">{{ __('main.income_report') }}</a></li>
-                                <li><a class="{{ Request::is('admin/reports/staff') ? 'active' : '' }}" href="{{route('admin.report.staff')}}">{{ __('main.staff_report') }}</a></li>
+                                <li style="display:none;"><a class="{{ Request::is('admin/reports/stock-branch') ? 'active' : '' }}" href="{{route('admin.report.stock_branch')}}">{{ __('main.branch_stock_report') }}</a></li>
+                                <li style="display:none;"><a class="{{ Request::is('admin/reports/income') ? 'active' : '' }}" href="{{route('admin.report.income')}}">{{ __('main.income_report') }}</a></li>
+                                <li style="display:none;"><a class="{{ Request::is('admin/reports/staff') ? 'active' : '' }}" href="{{route('admin.report.staff')}}">{{ __('main.staff_report') }}</a></li>
                             </ul>
                         </li>
                         <!--Only available for app admin-->
@@ -180,7 +187,7 @@
                         <li  wire:ignore class="dropdown"><a class="nav-link menu-title {{ Request::is('admin/settings*') ? 'active' : '' }}" href="javascript:void(0)"><i data-feather="settings"></i><span>{{ __('main.administration') }}</span></a>
                             <ul class="nav-submenu menu-content">
                                 <li><a href="{{route('admin.company')}}" class="{{ Request::is('admin/settings/company') ? 'active' : '' }}">{{ __('main.company_settings') }}</a></li>
-                                <li><a href="{{route('admin.measurement_settings')}}" class="{{ Request::is('admin/settings/measurement') ? 'active' : '' }}">{{ __('main.measurement_settings') }}</a></li>
+                                <li style="display:none;"><a href="{{route('admin.measurement_settings')}}" class="{{ Request::is('admin/settings/measurement') ? 'active' : '' }}">{{ __('main.measurement_settings') }}</a></li>
                                 <li><a href="{{route('admin.invoice-settings')}}" class="{{ Request::is('admin/settings/invoice') ? 'active' : '' }}">{{ __('main.invoice_settings') }}</a></li>
                                 <li><a href="{{route('admin.financial_year')}}" class="{{ Request::is('admin/settings/financial-year') ? 'active' : '' }}">{{ __('main.financial_year_settings') }}</a></li>
                                 <li><a href="{{route('admin.mail-settings')}}" class="{{ Request::is('admin/settings/mail') ? 'active' : '' }}">{{ __('main.mail_settings') }}</a></li>

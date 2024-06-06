@@ -11,6 +11,7 @@ use Livewire\Component;
 use Auth;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use App\Models\Product;
 
 class Dashboard extends Component
 {
@@ -26,7 +27,7 @@ class Dashboard extends Component
     {
         $this->total_sales = Invoice::sum('total');
         $this->total_expense = Expense::sum('amount');
-        $this->total_branches = User::whereUserType(3)->count();
+        $this->total_branches = Product::where('is_active',1)->count();
         $this->total_purchase = Purchase::sum('total');
         $this->total_payments = InvoicePayment::sum('paid_amount');
         $end = Carbon::today();

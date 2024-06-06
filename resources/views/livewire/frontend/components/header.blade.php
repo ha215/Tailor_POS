@@ -6,62 +6,10 @@
                     <img class="img-fluid h-8" src="{{ getApplicationLogo() }}" alt="" />
                 </a>
                 <div class="relative">
-                    <div href="#" class="flex justify-between items-center gap-2  cursor-pointer w-[7rem]"
-                        @click.stop="toggleBranchDropdown" @click.outside="hideBranchDropdown">
-                        <div class="flex flex-col pointer-events-none" @click.stop="toggleBranchDropdown">
-                            <div class="text-xs text-neutral-700">{{ __('main.branch') }}</div>
-                            <div class="text-xs text-neutral-900 font-semibold ">{{ $branch ? $branch->name : '?' }}
-                            </div>
-                        </div>
-                        <div class="" @click.stop="toggleBranchDropdown">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="absolute top-[100%] mt-2 left-0 bg-white p-4 shadow-md flex flex-col text-sm z-50 rounded-lg "
-                        x-cloak x-show="branchDropdownShown" @click.stop="" @touch.stop="">
-                        @foreach ($branches as $item)
-                            @if ($branch && $item->id == $branch->id)
-                                <a href="#" class="flex group items-center gap-2 py-2"
-                                    wire:click="changeBranch({{ $item->id }})">
-                                    <div class="text-secondary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                            class="bi bi-check-circle-fill h-3.5 w-3.5" viewBox="0 0 16 16">
-                                            <path
-                                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                                        </svg>
-                                    </div>
-                                    <div class="font-semibold group-hover:text-secondary/80">
-                                        {{ $item->name }}
-                                    </div>
-                                </a>
-                            @else
-                                <a href="#" class="flex  items-center gap-2 group py-2"
-                                    wire:click="changeBranch({{ $item->id }})">
-                                    <div class="text-secondary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="currentColor"
-                                            class="bi bi-circle " viewBox="0 0 16 16">
-                                            <path
-                                                d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                        </svg>
-                                    </div>
-                                    <div class="font-semibold group-hover:text-secondary/80">
-                                        {{ $item->name }}
-                                    </div>
-                                </a>
-                            @endif
-                        @endforeach
-                    </div>
+                    
+                    
                 </div>
             </div>
-
-            <div class="gap-3 font-semibold text-sm hidden lg:flex">
-                <a href="{{ route('frontend') }}" class="text-primary">{{ __('main.frontend_home') }}</a>
-                <a href="{{ route('frontend.offers') }}" class="text-primary">{{ __('main.offers') }}</a>
-            </div>
-
             <div class="gap-3 items-center hidden lg:flex">
                 {{-- <div
                     class="flex py-1.5 bg-secondary/10 p-2 text-sm items-center rounded-2xl border transition-all duration-200 border-transparent focus-within:border-secondary">
@@ -120,20 +68,7 @@
                         @endforeach
                     </div>
                 </div>
-                <button @click="showCart"
-                    class="flex py-1.5 p-4  text-sm gap-2 items-center rounded-2xl bg-white transition-all duration-200 text-secondary border border-secondary hover:bg-secondary hover:text-white">
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                            class="w-4 h-4">
-                            <path
-                                d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
-                        </svg>
-
-                    </div>
-                    <div class="font-semibold">
-                        {{ __('main.cart') }}
-                    </div>
-                </button>
+                
                 @if (Auth::guard('customer')->user())
                     <div class="flex py-1.5 p-4 text-sm gap-2 items-center rounded-2xl bg-secondary transition-all duration-200 text-white relative cursor-pointer border border-primary"
                         @click.prevent="toggleAccountDropdown" @click.outside="hideAccountDropdown">
@@ -214,7 +149,7 @@
                         </div>
                     </div>
                 @else
-                    <a href="{{route('frontend.login')}}"
+                    <a href="{{route('login')}}"
                         class="flex py-1.5 p-4 text-sm gap-2 items-center rounded-2xl bg-secondary transition-all duration-200 text-white relative cursor-pointer border border-primary">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -336,7 +271,7 @@
                     </div>
                 </div>
                 @if(!Auth::guard('customer')->check())
-                <a href="{{ route('frontend.login') }}" class="flex  items-center gap-2 p-3 px-1">
+                <a href="{{ route('login') }}" class="flex  items-center gap-2 p-3 px-1">
                     <div class="text-secondary">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-4 h-4">

@@ -50,10 +50,10 @@
                                             <h4>
                                                 {{ $total_branches }}
                                             </h4>
-                                            {{ __('main.total_branches') }}
+                                            {{ __('main.total_pdts') }}
                                         </div>
                                         <div class="">
-                                            <i class="fa fa-university text-3xl" aria-hidden="true"></i>
+                                            <i class="fa fa-cart text-3xl" aria-hidden="true"></i>
                                         </div>
                                     </div>
                                 </div>

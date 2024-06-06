@@ -42,11 +42,7 @@ class Header extends Component
 
         $this->languages = [
             'en' => 'English',
-            'fr' => 'French',
-            'hi' => 'Hindi',
-            'it' => 'Italian',
-            'ru' => 'Russian',
-            'es' => 'Spanish',
+            'ar' => 'Arabic',
         ];
         if(Session::has('selected_language'))
         {

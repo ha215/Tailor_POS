@@ -27,7 +27,7 @@
                                     </div>
                                 </div>
                                 @if (Auth::user()->user_type == 2)
-                                    <div class="col-3">
+                                    <div class="col-3" style="display:none;">
                                         <div class="mb-0">
                                             <label class="form-label">{{ __('main.branch') }}</label>
                                             <select required class="form-select" wire:model="branch">
@@ -85,8 +85,8 @@
                                             <td class="w-table-8">#{{ $item->voucher_no }}</td>
                                             <td class="w-table-15">{{ $item->date->format('d/m/Y') }}</td>
                                             <td class="w-table-20">
-                                                <span class="me-1">[{{ $item->customer->file_number ?? '' }}]</span>
-                                                <span>{{ $item->customer->first_name ?? '' }}</span>
+                                                <span>{{ $item->customer->name ?? '' }}</span>
+                                                <span class="me-1">[{{ $item->customer->phone_number_1 ?? '' }}]</span>
                                             </td>
                                             <td class="w-table-10">{{ getFormattedCurrency($item->paid_amount) }}</td>
                                             <td class="w-table-15"><span
