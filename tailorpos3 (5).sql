@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 06, 2024 at 09:16 AM
+-- Generation Time: Jun 08, 2024 at 04:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -83,10 +83,7 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`id`, `date`, `name`, `phone_number_1`, `phone_number_2`, `address`, `branch_id`, `is_active`, `created_by`, `created_at`, `updated_at`) VALUES
-(1, '2024-05-30', 'test', '1222222222222222222222', NULL, NULL, NULL, 1, 1, '2024-05-29 17:44:12', '2024-05-30 06:21:49'),
-(2, '2024-05-30', 'asas', '12112121212', '2323131', 'dsdsdd', NULL, 1, 1, '2024-05-30 06:10:37', '2024-05-30 06:19:39'),
-(3, '2024-06-02', 'Haritha Gireesh', '66551216', '97121607', 'riggai\nblaock 2\n', NULL, 1, 1, '2024-06-02 06:05:58', '2024-06-02 06:09:42'),
-(4, '2024-06-02', 'rash', '4343434', NULL, NULL, NULL, 1, 1, '2024-06-02 06:09:12', '2024-06-02 06:15:57');
+(1, '2024-06-08', 'test', '98765434', NULL, NULL, NULL, 1, 1, '2024-06-08 10:48:34', '2024-06-08 10:48:34');
 
 -- --------------------------------------------------------
 
@@ -126,14 +123,6 @@ CREATE TABLE `customer_measurements` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `customer_measurements`
---
-
-INSERT INTO `customer_measurements` (`id`, `customer_id`, `measurement_id`, `unit`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 4, 1, 2, '', '2024-06-04 19:41:47', '2024-06-05 07:03:08'),
-(2, 3, 1, 1, '', '2024-06-04 19:44:51', '2024-06-04 19:44:51');
-
 -- --------------------------------------------------------
 
 --
@@ -155,14 +144,7 @@ CREATE TABLE `customer_measurement_details` (
 --
 
 INSERT INTO `customer_measurement_details` (`id`, `customer_id`, `attribute_id`, `value`, `unit`, `created_at`, `updated_at`) VALUES
-(5, 3, 1, 34.00, 3, '2024-06-05 06:48:51', '2024-06-05 06:48:51'),
-(6, 3, 2, 20.00, 4, '2024-06-05 06:48:52', '2024-06-05 06:48:52'),
-(7, 3, 3, 12.00, 5, '2024-06-05 06:48:52', '2024-06-05 06:48:52'),
-(10, 4, 1, 67.00, 3, '2024-06-05 07:29:15', '2024-06-05 07:50:17'),
-(11, 4, 2, 45.00, 1, '2024-06-05 07:29:16', '2024-06-05 07:50:17'),
-(12, 4, 3, 49.00, 2, '2024-06-05 07:29:16', '2024-06-05 07:50:17'),
-(16, 2, 3, 80.00, 1, '2024-06-05 07:51:31', '2024-06-05 08:19:34'),
-(17, 2, 2, 14.00, 4, '2024-06-05 08:19:18', '2024-06-05 08:19:18');
+(1, 1, 1, 12.00, 1, '2024-06-08 11:01:22', '2024-06-08 11:01:22');
 
 -- --------------------------------------------------------
 
@@ -282,17 +264,19 @@ CREATE TABLE `invoices` (
   `branch_id` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `status` int(11) NOT NULL DEFAULT 1
+  `status` int(11) NOT NULL DEFAULT 1,
+  `delivery_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `invoices`
 --
 
-INSERT INTO `invoices` (`id`, `date`, `invoice_number`, `customer_name`, `customer_phone`, `customer_address`, `customer_id`, `salesman_id`, `discount`, `sub_total`, `total`, `notes`, `total_quantity`, `created_by`, `financial_year_id`, `branch_id`, `created_at`, `updated_at`, `status`) VALUES
-(1, '2024-05-29 21:21:47', 'INV-1', 'test', '1222222222222222222222', NULL, 1, NULL, 0.00, 120.00, 138.00, NULL, 1, 1, 1, 1, '2024-05-29 18:21:47', '2024-05-29 18:21:48', 1),
-(2, '2024-06-02 22:36:57', 'INV-2', NULL, '66551216', 'riggai\nblaock 2\n', 3, NULL, 0.00, 120.00, 120.00, NULL, 1, 1, 1, 1, '2024-06-02 19:36:57', '2024-06-02 19:36:58', 1),
-(3, '2024-06-04 09:42:16', 'INV-3', 'Haritha Gireesh', '66551216', 'riggai\nblaock 2\n', 3, 1, 0.00, 120.00, 120.00, NULL, 1, 1, 1, 1, '2024-06-04 06:42:16', '2024-06-04 06:42:17', 1);
+INSERT INTO `invoices` (`id`, `date`, `invoice_number`, `customer_name`, `customer_phone`, `customer_address`, `customer_id`, `salesman_id`, `discount`, `sub_total`, `total`, `notes`, `total_quantity`, `created_by`, `financial_year_id`, `branch_id`, `created_at`, `updated_at`, `status`, `delivery_date`) VALUES
+(1, '2024-06-08 13:49:12', 'INV-1', 'test', '98765434', NULL, 1, 1, 10.00, 120.00, 110.00, NULL, 1, 1, 1, 1, '2024-06-08 10:49:12', '2024-06-08 10:49:13', 2, '2024-06-25'),
+(2, '2024-06-08 13:52:16', 'INV-2', 'test', '98765434', NULL, 1, 1, 0.00, 120.00, 120.00, NULL, 1, 1, 1, 1, '2024-06-08 10:52:16', '2024-06-08 10:52:16', 2, '2024-06-12'),
+(3, '2024-06-08 13:58:36', 'INV-3', 'test', '98765434', NULL, 1, 1, 0.00, 120.00, 120.00, NULL, 1, 1, 1, 1, '2024-06-08 10:58:36', '2024-06-08 10:58:39', 2, '2024-06-19'),
+(4, '2024-06-08 17:14:05', 'INV-4', 'test', '98765434', NULL, 1, 1, 0.00, 120.00, 120.00, NULL, 1, 1, 1, 1, '2024-06-08 14:14:05', '2024-06-08 14:51:38', 4, '2024-06-19');
 
 -- --------------------------------------------------------
 
@@ -304,7 +288,6 @@ CREATE TABLE `invoice_details` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `invoice_id` bigint(20) UNSIGNED NOT NULL,
   `type` int(11) DEFAULT NULL,
-  `tax_amount` double(20,2) DEFAULT NULL,
   `quantity` double(15,2) NOT NULL,
   `item_id` bigint(20) UNSIGNED NOT NULL,
   `item_name` varchar(191) NOT NULL,
@@ -319,10 +302,11 @@ CREATE TABLE `invoice_details` (
 -- Dumping data for table `invoice_details`
 --
 
-INSERT INTO `invoice_details` (`id`, `invoice_id`, `type`, `tax_amount`, `quantity`, `item_id`, `item_name`, `rate`, `total`, `created_at`, `updated_at`, `unit_type`) VALUES
-(1, 1, 1, 18.00, 1.00, 1, 'pdt1', 120.00, 138.00, '2024-05-29 18:21:47', '2024-05-29 18:21:47', NULL),
-(2, 2, 1, 18.00, 1.00, 1, 'pdt1', 120.00, 138.00, '2024-06-02 19:36:58', '2024-06-02 19:36:58', NULL),
-(3, 3, 1, 18.00, 1.00, 1, 'pdt1', 120.00, 120.00, '2024-06-04 06:42:17', '2024-06-04 06:42:17', NULL);
+INSERT INTO `invoice_details` (`id`, `invoice_id`, `type`, `quantity`, `item_id`, `item_name`, `rate`, `total`, `created_at`, `updated_at`, `unit_type`) VALUES
+(1, 1, 1, 1.00, 1, 'Shirt', 120.00, 120.00, '2024-06-08 10:49:13', '2024-06-08 10:49:13', NULL),
+(2, 2, 1, 1.00, 1, 'Shirt', 120.00, 120.00, '2024-06-08 10:52:16', '2024-06-08 10:52:16', NULL),
+(3, 3, 1, 1.00, 1, 'Shirt', 120.00, 120.00, '2024-06-08 10:58:38', '2024-06-08 10:58:38', NULL),
+(4, 4, 1, 1.00, 1, 'Shirt', 120.00, 120.00, '2024-06-08 14:14:05', '2024-06-08 14:14:05', NULL);
 
 -- --------------------------------------------------------
 
@@ -353,7 +337,8 @@ CREATE TABLE `invoice_payments` (
 --
 
 INSERT INTO `invoice_payments` (`id`, `date`, `customer_id`, `customer_name`, `invoice_id`, `paid_amount`, `payment_mode`, `note`, `created_by`, `financial_year_id`, `branch_id`, `created_at`, `updated_at`, `payment_type`, `voucher_no`) VALUES
-(1, '2024-06-04 10:14:19', 3, NULL, 2, 20.00, 1, NULL, 1, 1, 1, '2024-06-04 07:14:19', '2024-06-04 07:14:19', 1, '1');
+(1, '2024-06-08 17:14:05', 1, 'test', 4, 100.00, 1, NULL, 1, 1, 1, '2024-06-08 14:14:05', '2024-06-08 14:14:05', 1, '1'),
+(2, '2024-06-08 17:51:38', 1, 'test', 4, 20.00, 1, NULL, 1, 1, 1, '2024-06-08 14:51:38', '2024-06-08 14:51:38', 1, '2');
 
 -- --------------------------------------------------------
 
@@ -403,7 +388,19 @@ INSERT INTO `master_settings` (`id`, `master_title`, `master_value`, `is_active`
 (26, 'allow_branches_to_create_materials', '1', 1, NULL, NULL),
 (27, 'frontend_enabled', '1', 1, NULL, NULL),
 (28, 'company_mobile', '66778899', 1, NULL, NULL),
-(29, 'company_email', 'pos@gmail.com', 1, NULL, NULL);
+(29, 'company_email', 'pos@gmail.com', 1, NULL, NULL),
+(30, 'company_name', 'Tailor Company', 1, NULL, NULL),
+(31, 'company_name_arabic', '', 1, NULL, NULL),
+(32, 'company_landline', '', 1, NULL, NULL),
+(33, 'company_tax_registration', '', 1, NULL, NULL),
+(34, 'company_cr_number', '', 1, NULL, NULL),
+(35, 'company_building_number', '12', 1, NULL, NULL),
+(36, 'company_street_name', 'riggai', 1, NULL, NULL),
+(37, 'company_district', 'Kuwait', 1, NULL, NULL),
+(38, 'company_city_name', 'kuwait', 1, NULL, NULL),
+(39, 'company_country', 'Kuwait', 1, NULL, NULL),
+(40, 'company_postal_code', '1234', 1, NULL, NULL),
+(41, 'company_additional_number', '', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -447,13 +444,6 @@ CREATE TABLE `measurements` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `measurements`
---
-
-INSERT INTO `measurements` (`id`, `products_id`, `measurement_attributes_id`, `name`, `is_active`, `created_by`, `created_at`, `updated_at`) VALUES
-(1, 1, 0, 'width', 1, 1, '2024-05-29 17:45:17', '2024-05-29 17:45:17');
-
 -- --------------------------------------------------------
 
 --
@@ -474,9 +464,7 @@ CREATE TABLE `measurement_attributes` (
 --
 
 INSERT INTO `measurement_attributes` (`id`, `name`, `is_active`, `created_by`, `created_at`, `updated_at`) VALUES
-(1, 'width', 1, NULL, NULL, '2024-06-06 07:13:07'),
-(2, 'Length', 1, 1, '2024-06-02 06:48:16', '2024-06-02 06:48:16'),
-(3, 'height', 1, 1, '2024-06-05 06:47:42', '2024-06-05 06:47:42');
+(1, 'width', 1, 1, '2024-06-08 10:48:16', '2024-06-08 10:48:16');
 
 -- --------------------------------------------------------
 
@@ -758,7 +746,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `image`, `stitching_cost`, `is_active`, `created_by`, `created_at`, `updated_at`, `is_featured`, `description`, `item_code`) VALUES
-(1, 'pdt1', NULL, 120.00, 1, 1, '2024-05-29 17:44:47', '2024-05-29 17:44:47', 0, '', '1233');
+(1, 'Shirt', '/uploads/product/1717843686.jpg', 120.00, 1, 1, '2024-06-08 10:48:06', '2024-06-08 10:48:06', 0, '', '123');
 
 -- --------------------------------------------------------
 
@@ -1403,7 +1391,7 @@ ALTER TABLE `contact_messages`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `customer_groups`
@@ -1415,13 +1403,13 @@ ALTER TABLE `customer_groups`
 -- AUTO_INCREMENT for table `customer_measurements`
 --
 ALTER TABLE `customer_measurements`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `customer_measurement_details`
 --
 ALTER TABLE `customer_measurement_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `customer_payment_discounts`
@@ -1457,25 +1445,25 @@ ALTER TABLE `financial_years`
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `invoice_details`
 --
 ALTER TABLE `invoice_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `invoice_payments`
 --
 ALTER TABLE `invoice_payments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `master_settings`
 --
 ALTER TABLE `master_settings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `materials`
@@ -1487,13 +1475,13 @@ ALTER TABLE `materials`
 -- AUTO_INCREMENT for table `measurements`
 --
 ALTER TABLE `measurements`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `measurement_attributes`
 --
 ALTER TABLE `measurement_attributes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `measurement_details`

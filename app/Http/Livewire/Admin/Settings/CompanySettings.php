@@ -59,8 +59,7 @@ class CompanySettings extends Component
             'city'  => 'required',
             'country'  => 'required',
             'postal'  => 'required',
-            'company_email' => 'nullable|email',
-            'tax'   => 'required|numeric'
+            'company_email' => 'nullable|email'
         ]);
         $user = User::find(Auth::user()->id);
         $user->name = $this->name;

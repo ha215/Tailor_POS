@@ -664,4 +664,8 @@ return [
     'i_agree_to_the'    => 'I agree to the',
     'booking'    => 'Booking',
     'total_pdts' => 'Total Products',
+    'slno' => 'SL No.',
+    'item_ready' => 'Is it Ready To Deliver ?',
+    'ready' => 'Ready',
+    'message_print' => 'After Preferred Delivery Date cloths will sell to another person',
 ];

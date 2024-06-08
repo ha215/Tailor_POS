@@ -150,6 +150,7 @@
     @if(count($sliders) > 0) 
 
     <script defer>
+
         const Swiper = window.Swiper;
         const swiper = new Swiper('.swiper', {
             modules: [window.SwiperCustom.Navigation, window.SwiperCustom.Pagination],

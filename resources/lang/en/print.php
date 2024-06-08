@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'thermal_title' => 'Simplified Tax Invoice',
+    'thermal_title' => 'Invoice',
     'item' => 'Item',
     'advance' => 'Advance',
     'no' => 'NO',

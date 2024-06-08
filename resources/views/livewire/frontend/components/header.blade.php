@@ -134,7 +134,7 @@
                                     <div class=" ">{{__('main.edit_profile')}}</div>
                                 </a>
 
-                                <a href="{{ route('frontend.login') }}" wire:click.prevent="logout"
+                                <a href="{{ route('login') }}" wire:click.prevent="logout"
                                     class="flex  items-center gap-2 p-3 px-1">
                                     <div class="text-secondary">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -370,3 +370,4 @@
         </div>
     </div>
 </div>
+

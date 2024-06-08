@@ -26,7 +26,7 @@ class Invoices extends Component
     public $taxable,$taxamount,$sub_total,$total;
     public $file_number,$first_name,$second_name,$family_name,$phone_number_1,$phone_number_2,$address,$customer_group_id;
     public $notes_c,$created_by,$opening_balance,$is_active=1,$email,$discount_type;
-    public $selling_price=[],$editkey,$stop=false;
+    public $selling_price=[],$editkey,$stop=false,$delivery_date;
 
     //render the page
     public function render()
@@ -326,7 +326,8 @@ class Invoices extends Component
             'created_by'    => Auth::user()->id,
             'financial_year_id' => getFinancialYearID(),
             'branch_id' => Auth::user()->id,
-            'status' => 0,
+            'status' => 2,
+            'delivery_date' => $this->delivery_date
         ]);
         $qtycount =0;
         foreach($this->cart_items as $key => $item)
@@ -344,7 +345,6 @@ class Invoices extends Component
             InvoiceDetail::create([
                 'invoice_id'    => $invoice->id,
                 'type'  => 1,
-                'tax_amount'    => $itemtaxtotal,
                 'quantity'  => $this->quantity[$key],
                 'item_id' => $product->id,
                 'item_name'=>$product->name,
@@ -366,7 +366,6 @@ class Invoices extends Component
             InvoiceDetail::create([
                 'invoice_id'    => $invoice->id,
                 'type'  => 2,
-                'tax_amount'    => $itemtaxtotal,
                 'quantity'  => $this->matqty[$key],
                 'item_id' => $material->id,
                 'item_name'=>$material->name,
@@ -380,7 +379,7 @@ class Invoices extends Component
             InvoicePayment::create([
                 'date' => Carbon::now(),
                 'invoice_id'    => $invoice->id,
-                'customer_name' => $this->selected_customer->first_name,
+                'customer_name' => $this->selected_customer->name,
                 'customer_id'   => $this->selected_customer->id,
                 'created_by'    => Auth::user()->id,
                 'financial_year_id' => getFinancialYearID(),
@@ -413,14 +412,7 @@ class Invoices extends Component
         $this->validate([
             'first_name' => 'required',
             'phone_number_1' => 'required',
-            'opening_balance' => 'nullable|numeric',
-            'email' => 'nullable|email',
-            'file_number' =>  [
-                'numeric',
-                'required', 
-                Rule::unique('customers')
-                        ->where('created_by', Auth::user()->id)
-            ],
+            
         ]);
         $user = Auth::user();
         $customer = Customer::create([
@@ -455,6 +447,12 @@ class Invoices extends Component
         {
             $this->dispatchBrowserEvent(
                 'alert', ['type' => 'error',  'message' => 'Customer is not selected!']);
+            return 1;   
+        }
+        if(!$this->delivery_date)
+        {
+            $this->dispatchBrowserEvent(
+                'alert', ['type' => 'error',  'message' => 'Preferred Delivery Date is not selected!']);
             return 1;   
         }
         

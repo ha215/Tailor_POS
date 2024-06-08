@@ -34,12 +34,6 @@
                         <div class="invoice-title-center">
                             <h4 class="heading">{{__('print.thermal_title')}}</h4>
                         </div>
-                        <div class="row-data b-none mb-1-px" style="display:none;">
-                            <div class="item-info b-none mt-10" >
-                               
-                            </div>
-                            <h5 class="my-5">{{ $site['company_tax_registration'] ?? 'No Tax' }}</h5>
-                        </div>
                         <div class="row-data mt-2 b-none" >
                             <div class="item-info b-none mt-10" >
                                 <h5 class="item-title"><b>{{__('main.invoice_no')}}</b>: </h5>
@@ -57,6 +51,12 @@
                                 <h5 class="item-title"><b>{{__('main.customer_info')}}</b> :</h5>
                             </div>
                             <h5 class="my-5">{{ $invoice->customer_name }}</h5>
+                        </div>
+                        <div class="row-data mt-2 b-none" >
+                            <div class="item-info b-none mt-10" >
+                                <h5 class="item-title"><b>{{__('main.preferred_delivery_date')}}</b>: </h5>
+                            </div>
+                            <h5 class="my-5">{{ \Carbon\Carbon::parse($invoice->delivery_date)->format('d/m/Y') }}</h5>
                         </div>
                         <div class="invoice-title text-align-end">
                             <h6 class="heading1">{{__('print.item')}}</h6>
@@ -134,7 +134,8 @@
                             <p class="mt-10">
                                 {{ isset($site['default_thanks_message']) && !empty($site['default_thanks_message']) ? $site['default_thanks_message'] : '' }}
                             </p>
-                            <p class="b_top">{{__('main.powered_by')}} <b>{{ getApplicationName() }}</b></p>
+                            <p class="b_top">{{__('main.powered_by')}} <b>{{ isset($site['company_name']) && !empty($site['company_name']) ? $site['company_name'] : '' }}</b></p>
+                            <p class="b_top">{{__('main.message_print')}}</b></p>
                         </div>
                     </div>
                 </div>

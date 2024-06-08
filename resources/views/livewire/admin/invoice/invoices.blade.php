@@ -46,6 +46,11 @@
                                         <input type="date" class="form-control" readonly disabled
                                             value="{{ $date }}" />
                                     </div>
+                                    <div class="col-lg-2 d-flex align-items-center">
+                                        <label class="form-label mb-0 me-2" >{{ __('main.preferred_delivery_date') }}</label>
+                                        <input type="date" class="form-control"  
+                                            value="" wire:model="delivery_date" required />
+                                    </div>
                                     <div class="col-lg-3">
                                         <div class="row g-2 align-items-center">
                                             <div class="col">
@@ -491,38 +496,10 @@
                 <form>
                     <div class="modal-body">
                         <div class="row align-items-start g-3">
+                            
                             <div class="col-lg-6 col-12">
                                 <div class="mb-0">
-                                    <label class="form-label">{{ __('main.file_number') }}
-                                        <span class="text-danger">*</span> </label>
-                                    <input type="text" required class="form-control"
-                                        placeholder="{{ __('main.enter_customer_id') }}" wire:model="file_number">
-                                </div>
-                                @error('file_number')
-                                    <span class="error text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            @php
-                                $groups = \App\Models\CustomerGroup::where('is_active', 1)
-                                    ->latest()
-                                    ->get();
-                            @endphp
-                            <div class="col-lg-6 col-12">
-                                <div class="mb-0">
-                                    <label class="form-label">{{ __('main.customer_group') }}
-                                    </label>
-                                    <select wire:model="customer_group_id" class="form-select">
-                                        <option value="">{{ __('main.select_group') }}
-                                        </option>
-                                        @foreach ($groups as $row)
-                                            <option value="{{ $row->id }}">{{ $row->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-12">
-                                <div class="mb-0">
-                                    <label class="form-label">{{ __('main.customer_first_name') }}<span
+                                    <label class="form-label">{{ __('main.name') }}<span
                                             class="text-danger">*</span> </label>
                                     <input type="text" required class="form-control"
                                         placeholder="{{ __('main.enter_first_name') }}" wire:model="first_name" />
@@ -530,20 +507,6 @@
                                 @error('first_name')
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
-                            </div>
-                            <div class="col-lg-6 col-12">
-                                <div class="mb-0">
-                                    <label class="form-label">{{ __('main.customer_last_name') }}</label>
-                                    <input type="text" class="form-control"
-                                        placeholder="{{ __('main.enter_last_name') }}" wire:model="second_name" />
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-12">
-                                <div class="mb-0">
-                                    <label class="form-label">{{ __('main.customer_family_name') }}</label>
-                                    <input type="text" class="form-control"
-                                        placeholder="{{ __('main.enter_family_name') }}" wire:model="family_name" />
-                                </div>
                             </div>
                             <div class="col-lg-6 col-12">
                                 <div class="mb-0">
@@ -571,17 +534,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-12">
-                                <div class="mb-0">
-                                    <label class="form-label">{{ __('main.opening_balance') }}</label>
-                                    <div class="input-group">
-                                        <input class="form-control" required type="number"
-                                            placeholder="{{ __('main.enter_amount') }}"
-                                            wire:model="opening_balance" />
-                                        <span class="input-group-text">{{ getCurrency() }}</span>
-                                    </div>
-                                </div>
-                            </div>
+                            
                             <div class="col-lg-12 col-12">
                                 <div class="mb-0">
                                     <label class="form-label">{{ __('main.customer_address') }}</label>

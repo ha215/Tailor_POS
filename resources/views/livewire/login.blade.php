@@ -72,8 +72,13 @@
                             <div class="form-group pb-4">
                                 <a class="btn btn-primary btn-block" wire:click.prevent="forgotpassword()">{{ __('main.reset_password')}} </a>
                             </div>
+                             @php
+                             $settings = new App\Models\MasterSetting();
+            
+                             $site = $settings->siteData();
+                             @endphp
                             <div class="login-social-title text-center">
-                                <h5>{{ __('main.powered_by') }} <div>{{getApplicationName()}}</div> </h5>
+                                <h5>{{ __('main.powered_by') }} <div>{{ isset($site['company_name']) && !empty($site['company_name']) ? $site['company_name'] : '' }}</div> </h5>
                             </div>
                         </form>
                     </div>

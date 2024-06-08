@@ -1,101 +1,153 @@
 <div>
-    <!DOCTYPE html>
-    <html lang="en">
+    <!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>{{ __('main.print') }}</title>
-        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.min.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/custom.css') }}" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>{{__('main.print')}}</title>
+        <link rel="stylesheet" href="{{ asset('assets/css/thermal-print-style.css') }}">
     </head>
-    <body>
-        <div class="container mt-0">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
+    <body onload="">
+        @php
+            $settings = new App\Models\MasterSetting();
+            $site = $settings->siteData();
+            $branch = \App\Models\User::find($invoice->created_by);
+        @endphp
+        <div class="page-wrapper">
+            <div class="invoice-card padding-top">
+                <div class="invoice-head text-center">
+                    <h4>{{ isset($site['company_name']) && !empty($site['company_name']) ? $site['company_name'] : '' }}
+                    </h4>
+                    @if(Auth::user()->user_type != 2)
+                        <p class="my-0">{{ $branch->address ?? '' }} </p>
+                        @if ($branch->phone)
+                            <p class="my-0">{{ getCountryCode() }} {{ $branch->phone ?? '' }}</p><br>
+                        @endif
+                    @else
+                        @if (isset($site['company_mobile']) && !empty($site['company_mobile']))
+                            <p class="my-0">{{ getCountryCode() }} {{ isset($site['company_mobile']) ? $site['company_mobile'] : ''}}</p><br>
+                        @endif
+                    @endif
+                </div>
+                <div class="invoice-details b-t-0">
+                    <div class="invoice-list">
+                        <div class="invoice-title-center">
+                            <h4 class="heading">{{__('print.thermal_title')}}</h4>
+                        </div>
+                        <div class="row-data mt-2 b-none" >
+                            <div class="item-info b-none mt-10" >
+                                <h5 class="item-title"><b>{{__('main.invoice_no')}}</b>: </h5>
+                            </div>
+                            <h5 class="my-5">{{ $invoice->invoice_number }}</h5>
+                        </div>
+                        <div class="row-data b-none">
+                            <div class="item-info b-none mt-10" >
+                                <h5 class="item-title"><b>{{__('main.date')}}</b> : </h5>
+                            </div>
+                            <h5 class="my-5">{{ \Carbon\Carbon::parse($invoice->date)->format('d/m/Y g:i A') }}</h5>
+                        </div>
+                        <div class="row-data b-none">
+                            <div class="item-info b-none mt-10" >
+                                <h5 class="item-title"><b>{{__('main.customer_info')}}</b> :</h5>
+                            </div>
+                            <h5 class="my-5">{{ $invoice->customer_name }}</h5>
+                        </div>
+                        <div class="row-data mt-2 b-none" >
+                            <div class="item-info b-none mt-10" >
+                                <h5 class="item-title"><b>{{__('main.preferred_delivery_date')}}</b>: </h5>
+                            </div>
+                            <h5 class="my-5">{{ \Carbon\Carbon::parse($invoice->delivery_date)->format('d/m/Y') }}</h5>
+                        </div>
+                        <div class="invoice-title text-align-end">
+                            <h6 class="heading1">{{__('print.item')}}</h6>
+                            <h6 class="heading1">{{__('main.rate')}}</h6>
+                            <h6 class="heading1 heading-child">{{__('main.qty')}}</h6>
+                            <h6 class="heading1 heading-child">{{__('main.total')}}</h6>
+                        </div>
+                        @php
+                            $qty = 0;
+                        @endphp
+                        @foreach ($invoice->invoiceProductDetails as $row)
+                            <div class="row-data product-detail-container">
+                                <div class="product-detail-item-name">
+                                    <h5 class="my-5"><b>{{ $row->item_name }} </b></h5>
+                                </div>
+                                <div class="w-50-px">
+                                    <h5 class="my-5"><b>{{ getFormattedCurrency($row->rate) }} </b></h5>
+                                </div>
+                                <div class="w-50-px">
+                                    <h5 class="my-5"><b>{{ $row->quantity }} @if ($row->type == 2)
+                                                {{ getUnitType($row->unit_type ?? '') }}
+                                            @endif
+                                        </b></h5>
+                                </div>
+                                <div class="w-58-px">
+                                    <h5 class="my-5"><b>{{ getFormattedCurrency($row->total, 2) }}</b></h5>
+                                </div>
+                                @php
+                                    $qty = $qty + $row->product_quantity;
+                                @endphp
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="invoice-footer mb-15 ">
+                        <div class="row-data">
+                            <div class="item-info">
+                                <h5 class="item-title"> <b>{{__('main.sub_total')}}</b> : </h5>
+                            </div>
+                            <h5 class="my-5">
+                                {{ getFormattedCurrency($invoice->sub_total) }}
+                            </h5>
+                        </div>
+                        <div class="row-data">
+                            <div class="item-info">
+                                <h5 class="item-title"> <b>{{__('main.discount')}}</b>: </h5>
+                            </div>
+                            <h5 class="my-5">{{ getFormattedCurrency($invoice->discount) }}</h5>
+                        </div>
+                        <div class="row-data">
+                            <div class="item-info">
+                                <h5 class="item-title"> <b>{{__('main.total')}} </b> : </h5>
+                            </div>
+                            <h5 class="my-5">{{ getFormattedCurrency($invoice->total) }}</h5>
+                        </div>
+                        <div class="row-data">
                             @php
-                                $settings = new App\Models\MasterSetting();
-                                $site = $settings->siteData();
+                                $paid = \App\Models\InvoicePayment::where('invoice_id', $invoice->id)->sum('paid_amount');
                             @endphp
-                            <div class="row">
-                                <div class="col">
-                                    <h4 class="font-weight-bold mb-1 mt-3 w-table-40">
-                                        {{ $site['company_name'] ?? 'Tailor POS' }}</h4>
-                                    <p class="mb-0"><small
-                                            class="font-weight-bold text-gray">{{ __('main.voucher_no') }}:
-                                            {{ $site['company_cr_number'] ?? 'No CR' }}</small></p>
-                                   
-                                    <p><small class="font-weight-bold text-gray">{{ __('main.phone_number') }}:
-                                            {{ Auth::user()->phone }}</small></p>
-                                </div>
-                                <div class="col-auto pt-80">
-                                    <p class="mb-0"><strong>{{ __('print.no') }}</strong>: @if ($bill->voucher_no)
-                                            #{{ $bill->voucher_no }}
-                                        @endif
-                                    </p>
-                                    <p><strong>{{ __('main.date') }}</strong>:
-                                        {{ $bill->date->format('d-M-Y h:i a') }}</p>
-                                </div>
+                            <div class="item-info">
+                                <h5 class="item-title"> <b>{{__('main.paid')}}</b>: </h5>
                             </div>
-                            <div class="table-responsive mt-4">
-                                <table class="table table-bordered mb-0">
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="8">{{ __('print.received_from') }}:
-                                                <strong>{{ $bill->customer->name ?? '' }}<strong>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="8">{{ __('main.amount') }}:
-                                                <strong>{{ getFormattedCurrency($bill->paid_amount) }} <strong>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="8">{{ __('print.amount_in_words') }}:
-                                                <strong>{{ getIndianCurrency($bill->paid_amount) }}
-                                                    {{ __('print.currency_words') }}
-                                                    <strong>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="8">{{ __('print.being_for') }} <strong>
-                                                    @if ($bill->payment_type == 1)
-                                                        {{ ' Invoice #' }} {{ $bill->invoice->invoice_number }}
-                                                    @endif
-
-                                                    @if ($bill->payment_type == 2)
-                                                        {{ ' Opening Balance' }}
-                                                    @endif
-                                                    <strong>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <h5 class="my-5">{{ getFormattedCurrency($paid) }} </h5>
+                        </div>
+                        <div class="row-data">
+                            <div class="item-info">
+                                <h5 class="item-title"> <b>{{__('main.balance')}}</b> : </h5>
                             </div>
-                            <div class="row mt-100">
-                                <div class="col">
-                                    <strong>{{ __('print.receivers_sign') }}</strong>.........................................
-                                </div>
-                                <div class="col-auto">
-                                    <strong>{{ __('print.signature') }}</strong>...................................................
-                                </div>
-                            </div>
+                            <h5 class="my-5">{{ getFormattedCurrency($invoice->total - $paid) }} </h5>
+                        </div>
+                    </div>
+                    <div class="invoice_address">
+                        <div class="text-center">
+                        </div>
+                        <div class="text-center">
+                            <p class="mt-10">
+                                {{ isset($site['default_thanks_message']) && !empty($site['default_thanks_message']) ? $site['default_thanks_message'] : '' }}
+                            </p>
+                            <p class="b_top">{{__('main.powered_by')}} <b>{{ isset($site['company_name']) && !empty($site['company_name']) ? $site['company_name'] : '' }}</b></p>
                         </div>
                     </div>
                 </div>
             </div>
-
-        </div>
-        <script>
-            window.onload = function() {
-            "use strict";
-                window.print();
-                setTimeout(function() {
+    </body>
+    </html>
+</div>
+<script type="text/javascript">
+    window.onload = function() {
+    "use strict";
+        window.print();
+        setTimeout(function() {
             window.onfocus=function(){ window.close();}
         }, 200);
-            }
-        </script>
-    </body>
-</div>
+    }
+</script>

@@ -441,9 +441,9 @@ use Illuminate\Support\Facades\Auth;
                 case 2:
                     return 'bg-warning';
                 case 3:
-                    return 'bg-success';
+                    return 'bg-danger';
                 case 4:
-                    return 'bg-light-primary';
+                    return 'btn-success custom-green-btn';
             }
         }
     }

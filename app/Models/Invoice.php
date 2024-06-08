@@ -23,7 +23,9 @@ class Invoice extends Model
         'total_quantity',
         'created_by',
         'financial_year_id',
-        'branch_id'
+        'branch_id',
+        'status',
+        'delivery_date'
     ];
 
     //created user relationship 
@@ -47,4 +49,15 @@ class Invoice extends Model
     public function invoiceProductDetails() {
         return $this->hasMany(InvoiceDetail::class,'invoice_id','id');
     }
+    public function paid($id) {
+        $sum = InvoicePayment::where('invoice_id',$id)->sum('paid_amount');
+        return $sum;
+    }
+    public function balance($id) {
+        $total = Invoice::find($id)->total;
+        $sum = InvoicePayment::where('invoice_id',$id)->sum('paid_amount');
+        $balance = $total - $sum;
+        return $balance;
+    }
+
 }

@@ -76,7 +76,7 @@
                                             <input type="number" class="form-control" placeholder="{{ __('main.enter_company_land_line') }}" wire:model="company_landline"/>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-12">
+                                    <div class="col-lg-4 col-12" style="display:none">
                                         <div class="mb-0">
                                             <label class="form-label">{{ __('main.tax_registration_number') }}<span class="text-danger">*</span></label>
                                             <input type="text" required class="form-control" placeholder="{{ __('main.enter_tax_registration_number') }}"  wire:model="tax"/>

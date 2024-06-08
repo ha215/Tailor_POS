@@ -24,7 +24,7 @@
                                             <div class="col-12">
                                                 <div class="mb-0">
                                                     <label class="form-label">{{ __('main.select_customer') }}<span class="text-danger">*</span> </label>
-                                                    <input type="text" required class="form-control" placeholder="@if($selected_customer) {{$selected_customer->first_name}} @else {{ __('main.search_customer') }} @endif" wire:model="customer_query"/>
+                                                    <input type="text" required class="form-control" placeholder="@if($selected_customer) {{$selected_customer->name}} @else {{ __('main.search_customer') }} @endif" wire:model="customer_query"/>
                                                     @if($customers && count($customers) > 0)
                                                     <ul class="list-group position-absolute ">
                                                         @foreach ($customers as $item)

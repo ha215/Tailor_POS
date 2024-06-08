@@ -130,7 +130,7 @@
                                 <li><a class="{{ Request::is('admin/purchase/materials*') ? 'active' : '' }}" href="{{route('admin.materials')}}">{{ __('main.materials') }} </a></li>
                             </ul>
                         </li>
-                        <li  wire:ignore class="">
+                        <li  wire:ignore class="" style="display:none;">
                             <a class="nav-link menu-title link-nav {{ Request::is('admin/branch') ? 'active' : '' }}" href="{{route('admin.branch')}}"><i data-feather="git-branch"></i>
                                 <span>{{ __('main.branches') }} </span>
                             </a>
@@ -153,12 +153,12 @@
                         </li>
                         @endif
                         @if(Auth::user()->user_type==2)
-                        <li  wire:ignore class="">
+                        <li  wire:ignore class="" style="display:none;">
                             <a class="nav-link menu-title link-nav {{ Request::is('admin/stock-adjustment*') ? 'active' : '' }}" href="{{route('admin.stock_adjustments')}}"><i data-feather="clipboard"></i>
                                 <span>{{ __('main.stock_adjustment') }}</span>
                             </a>
                         </li>
-                        <li  wire:ignore class="">
+                        <li  wire:ignore class="" style="display:none;">
                             <a class="nav-link menu-title link-nav {{ Request::is('admin/stock-transfer*') ? 'active' : '' }}" href="{{route('admin.stock_transfer')}}"><i data-feather="repeat"></i>
                                 <span>{{ __('main.stock_transfer') }}</span>
                             </a>

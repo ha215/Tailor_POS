@@ -85,7 +85,7 @@
                                     @foreach($measurementDetails as $key => $details)
                                     <tr>
                                             <th class="w-table-15">
-                                                <div class="mb-0 ">#{{ $key }}</div>
+                                                <div class="mb-0 ">#{{ $key + 1}}</div>
                                             </th>
                                             <td class="w-table-20">
                                                {{$details->attributes['name']}}

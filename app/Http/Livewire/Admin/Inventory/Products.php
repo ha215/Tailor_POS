@@ -52,7 +52,9 @@ class Products extends Component
                 if (!file_exists($destinationPath)) {
                     mkdir($destinationPath, 0777, true);
                 }
+                
                 $imgFile = Image::make($this->image->getRealPath());
+                
                 $imgFile->save($destinationPath.'/'.$input['file'],75,'jpg');
                 $imageurl = '/uploads/product/'.$input['file'];
             }
