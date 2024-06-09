@@ -14,7 +14,7 @@ use Livewire\Component;
 
 class ViewCustomerMeasurement extends Component
 {
-    public $attributes,$type='',$unit,$measurements,$userattributes,$customer_id,$measurement,$notes,$customer;
+    public $measurementAttributes,$type='',$unit,$measurements,$userattributes,$customer_id,$measurement,$notes,$customer;
     public function render()
     {
         return view('livewire.admin.online-customers.view-customer-measurement');
@@ -93,8 +93,8 @@ class ViewCustomerMeasurement extends Component
                 $this->notes = '';
                 $this->unit = '';
             }
-            $this->attributes = MeasurementDetail::where('measurement_id',$this->type)->get();
-            foreach($this->attributes as $row)
+            $this->measurementAttributes = MeasurementDetail::where('measurement_id',$this->type)->get();
+            foreach($this->measurementAttributes as $row)
             {
                 if($userattributes->where('attribute_id',$row->id)->first())
                 {
@@ -107,7 +107,7 @@ class ViewCustomerMeasurement extends Component
         }
         if($this->type == '')
         {
-            $this->attributes = null;
+            $this->measurementAttributes = null;
         }
     }
 }
