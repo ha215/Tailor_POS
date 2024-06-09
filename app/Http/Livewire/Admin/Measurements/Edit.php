@@ -21,8 +21,8 @@ class Edit extends Component
     //load attributes for edit
     public function mount($id){    
       $this->edit_id = $id;
-      $attributes = MeasurementDetail::where('measurement_id',$id)->get();
-      foreach($attributes as $row){
+      $Newattributes = MeasurementDetail::where('measurement_id',$id)->get();
+      foreach($Newattributes as $row){
         array_push($this->selected_attributes,$row->measurement_attributes_id);
       }
       $measurement = Measurement::findorfail($id);
@@ -37,10 +37,10 @@ class Edit extends Component
             'name' => 'required',
         ]);
         $measurement = Measurement::find($this->edit_id);
-        $attributes = MeasurementDetail::where('measurement_id',$this->edit_id)->get();
+        $Newattributes = MeasurementDetail::where('measurement_id',$this->edit_id)->get();
         $myarray = [];
         $myarray2 = [];
-        foreach($attributes as $item)
+        foreach($Newattributes as $item)
         {
             $myarray[$item->measurement_attributes_id] = collect($this->selected_attributes)->contains(function ($value, $key) use($item) {
                 return $value == $item->measurement_attributes_id;

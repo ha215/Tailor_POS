@@ -61,7 +61,7 @@
                             </div>
                         </div>
                         @php
-                            $attributes = \App\Models\MeasurementAttribute::where('is_active',1)->latest()->get();
+                            $Custattributes = \App\Models\MeasurementAttribute::where('is_active',1)->latest()->get();
                         @endphp
                         <div class="card-body pb-0">
                             <div class="row gx-3 mb-4" style="display:none;">
@@ -80,7 +80,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                @if ($attributes && count($attributes) > 0)
+                                @if ($Custattributes && count($Custattributes) > 0)
                                     <div class="col-lg-3">
                                         <label
                                             class="form-label">{{ __('main.measurement_unit') }}
@@ -105,8 +105,8 @@
                             <div class="card-body pt-0">
                                 <div class="row g-3">
                                     
-                                    @if ($attributes && count($attributes) > 0)
-                                        @foreach ($attributes as $item)
+                                    @if ($Custattributes && count($Custattributes) > 0)
+                                        @foreach ($Custattributes as $item)
                                             <div class="col-lg-6 col-12">
                                                 <div class="mb-0">
                                                     <div class="input-group">

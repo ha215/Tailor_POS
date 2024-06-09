@@ -30,10 +30,10 @@
                                 <hr class="bg-light">
                                 <div class="row g-3">
                                     @php
-                                        $attributes = \App\Models\MeasurementAttribute::where('is_active',1)->latest()->get();
+                                        $Newattributes = \App\Models\MeasurementAttribute::where('is_active',1)->latest()->get();
                                     @endphp
                                     
-                                    @foreach($attributes as $row)
+                                    @foreach($Newattributes as $row)
                                     <div class="col-lg-2 col-12">
                                         <div class="mb-0">
                                             <label class="d-block" for="attri{{ $row->id }}">

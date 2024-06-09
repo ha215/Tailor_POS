@@ -15,7 +15,7 @@ use App\Models\Translation;
 
 class CustomerListMeasurement extends Component
 {
-    public $attributes,$type='',$unit,$measurements,$userattributes,$customer_id,$measurement,$notes,$customer;
+    public $Custattributes,$type='',$unit,$measurements,$userattributes,$customer_id,$measurement,$notes,$customer;
     public $measurementDetails;
     
     //Render the page

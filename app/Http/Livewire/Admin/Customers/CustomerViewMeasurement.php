@@ -15,7 +15,7 @@ use App\Models\Translation;
 
 class CustomerViewMeasurement extends Component
 {
-    public $attributes,$type='',$unit,$measurements,$userattributes,$customer_id,$measurement,$notes,$customer;
+    public $Custattributes,$type='',$unit,$measurements,$userattributes,$customer_id,$measurement,$notes,$customer;
     
     //Render the page
     public function render()
@@ -143,8 +143,8 @@ class CustomerViewMeasurement extends Component
                 $this->notes = '';
                 $this->unit = '';
             }
-            $this->attributes = MeasurementDetail::where('measurement_id',$this->type)->get();
-            foreach($this->attributes as $row)
+            $this->Custattributes = MeasurementDetail::where('measurement_id',$this->type)->get();
+            foreach($this->Custattributes as $row)
             {
                 if($userattributes->where('attribute_id',$row->id)->first())
                 {
@@ -157,7 +157,7 @@ class CustomerViewMeasurement extends Component
         }
         if($this->type == '')
         {
-            $this->attributes = null;
+            $this->Custattributes = null;
         }
     }
 }
