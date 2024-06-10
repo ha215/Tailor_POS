@@ -17,6 +17,7 @@ class CustomerListMeasurement extends Component
 {
     public $Custattributes,$type='',$unit,$measurements,$userattributes,$customer_id,$measurement,$notes,$customer;
     public $measurementDetails;
+    public $hasMorePages;
     
     //Render the page
     public function render()
@@ -43,7 +44,7 @@ class CustomerListMeasurement extends Component
        if(Auth::user()->user_type==3) {
             $this->customer=Customer::where('created_by',Auth::user()->id)->where('id',$id)->first();
         }
-        $this->measurementDetails = CustomerMeasurementDetail::where('customer_measurement_id',$id)
+        $this->measurementDetails = CustomerMeasurementDetail::where('customer_id',$id)
                                                              ->get();
         if(!$this->customer)
         {
