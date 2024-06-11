@@ -141,7 +141,7 @@ return [
     "select_salesman" => "اختر البائع",
     "particulars" => "التفاصيل",
     "selling_price" => "سعر البيع",
-    "rate" => "المعدل",
+    "rate" => "يكلف",
     "qty" => "الكمية",
     "tax" => "الضريبة",
     "tax_amount" => "مبلغ الضريبة",
@@ -418,7 +418,7 @@ return [
     "action_in_stock" => "الإجراء في المخزون",
     "deduction" => "الخصم",
     "addition" => "الإضافة",
-    "items" => "العناصر",
+    "items" => "اسم العنصر",
     "edit_stock_adjustment" => "تعديل تعديل المخزون",
     "stock_adjustments" => "تعديلات المخزون",
     "add_new_stock_adjustment" => "إضافة تعديل جديد للمخزون",
@@ -663,6 +663,9 @@ return [
     'item_ready' => 'هل هو جاهز للتسليم؟',
     'ready' => 'جاهز',
     'message_print' => 'بعد تاريخ التسليم المفضل سيتم بيع الملابس لشخص آخر',
+    'customer_name' => 'اسم العميل',
+    'customer_num' => 'رقم العميل',
+
 
 ];
 

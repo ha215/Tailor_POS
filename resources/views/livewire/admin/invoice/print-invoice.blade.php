@@ -48,19 +48,25 @@
                         </div>
                         <div class="row-data b-none">
                             <div class="item-info b-none mt-10" >
-                                <h5 class="item-title"><b>{{__('main.customer_info')}}</b> :</h5>
+                                <h5 class="item-title"><b>{{__('main.customer_name')}}</b> :</h5>
                             </div>
                             <h5 class="my-5">{{ $invoice->customer_name }}</h5>
                         </div>
+                        <div class="row-data b-none">
+                            <div class="item-info b-none mt-10" >
+                                <h5 class="item-title"><b>{{__('main.customer_num')}}</b> :</h5>
+                            </div>
+                            <h5 class="my-5">{{ $invoice->customer_phone }}</h5>
+                        </div>
                         <div class="row-data mt-2 b-none" >
                             <div class="item-info b-none mt-10" >
-                                <h5 class="item-title"><b>{{__('main.preferred_delivery_date')}}</b>: </h5>
+                                <h5 class="item-title"><b>{{__('print.receiving_date')}}</b>: </h5>
                             </div>
                             <h5 class="my-5">{{ \Carbon\Carbon::parse($invoice->delivery_date)->format('d/m/Y') }}</h5>
                         </div>
                         <div class="invoice-title text-align-end">
-                            <h6 class="heading1">{{__('print.item')}}</h6>
-                            <h6 class="heading1">{{__('main.rate')}}</h6>
+                            <h6 class="heading1 heading-child" style="font-size:18px;">{{__('print.item')}}</h6>
+                            <h6 class="heading1 heading-child" style="font-size:18px;">{{__('main.rate')}}</h6>
                             <h6 class="heading1 heading-child">{{__('main.qty')}}</h6>
                             <h6 class="heading1 heading-child">{{__('main.total')}}</h6>
                         </div>
@@ -134,8 +140,10 @@
                             <p class="mt-10">
                                 {{ isset($site['default_thanks_message']) && !empty($site['default_thanks_message']) ? $site['default_thanks_message'] : '' }}
                             </p>
-                            <p class="b_top">{{__('main.powered_by')}} <b>{{ isset($site['company_name']) && !empty($site['company_name']) ? $site['company_name'] : '' }}</b></p>
-                            <p class="b_top">{{__('main.message_print')}}</b></p>
+                            <p class="mt-10">
+                                {{ $invoice->notes}}
+                            </p>
+                            <p class="b_top" style="display:none;">{{__('main.message_print')}}</b></p>
                         </div>
                     </div>
                 </div>

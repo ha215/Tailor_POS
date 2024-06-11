@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use App\Models\CustomerMeasurementDetail;
 
 class Invoices extends Component
 {
@@ -27,6 +28,8 @@ class Invoices extends Component
     public $file_number,$first_name,$second_name,$family_name,$phone_number_1,$phone_number_2,$address,$customer_group_id;
     public $notes_c,$created_by,$opening_balance,$is_active=1,$email,$discount_type;
     public $selling_price=[],$editkey,$stop=false,$delivery_date;
+    public $Custattributes,$unit,$measurements,$userattributes;
+    
 
     //render the page
     public function render()
@@ -414,6 +417,21 @@ class Invoices extends Component
             'phone_number_1' => 'required',
             
         ]);
+        $hasError= false;
+        if(empty($this->userattributes)){
+            $this->dispatchBrowserEvent(
+                'alert', ['type' => 'warning',  'message' => 'Please Select Unit and Measurements!']); 
+            return;
+        }else{
+            foreach ($this->userattributes as $key => $value) {
+                if (!empty($value)) {
+                    if (empty($this->unit[$key])) {
+                        $hasError = true;
+                        $this->addError('unit.' . $key, 'The unit field is required when attribute value is provided.');
+                    }
+                }
+            }
+        }
         $user = Auth::user();
         $customer = Customer::create([
             'date' =>  Carbon::today(),
@@ -424,6 +442,23 @@ class Invoices extends Component
             'address' => $this->address,
             'created_by' => Auth::user()->id,
         ]);
+        if ($hasError) {
+            $this->dispatchBrowserEvent(
+                'alert', ['type' => 'warning',  'message' => 'Please Select Unit!']);
+        }else{
+            foreach($this->userattributes as $key => $value)
+            {
+                $unit = $this->unit[$key];
+                 CustomerMeasurementDetail::create([
+                        'customer_id'   => $customer->id,
+                        'attribute_id'  => $key,
+                        'value' => $value,
+                        'unit'  => $unit
+                    ]);
+                
+                
+            }
+        }
         $this->dispatchBrowserEvent('alert',['type' => 'success','title' => 'Success','message' => 'Customer Created Successfully!']);
         $this->selected_customer = $customer;
         $this->customer_query = '';

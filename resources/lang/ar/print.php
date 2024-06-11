@@ -11,4 +11,5 @@ return [
     'being_for' => 'يكون ل',
     'receivers_sign' => "توقيع المستلم",
     'signature' => "التوقيع",
+    'receiving_date' => 'تاريخ الاستلام',
 ];

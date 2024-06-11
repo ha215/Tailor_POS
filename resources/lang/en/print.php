@@ -11,4 +11,5 @@ return [
     'being_for' => 'Being for',
     'receivers_sign' => "Receiver's Sign",
     'signature' => "Signature",
+    'receiving_date' => 'Receiving Date',
 ];

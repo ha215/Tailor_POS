@@ -58,6 +58,8 @@ class Products extends Component
                 $imgFile->save($destinationPath.'/'.$input['file'],75,'jpg');
                 $imageurl = '/uploads/product/'.$input['file'];
             }
+            $pdtCount = Product::count();
+            $itemNum = str_pad($pdtCount+1, 3, '0', STR_PAD_LEFT);
             $product = Product::create([
                 'name'  => $this->name,
                 'stitching_cost' => $this->stitching_cost,
@@ -66,7 +68,7 @@ class Products extends Component
                 'image' => $imageurl,
                 'description' => $this->description,
                 'created_by' => Auth::user()->id,
-                'item_code' => $this->item_code
+                'item_code' => $itemNum
             ]);
             $this->products = Product::latest()->get();
             $this->resetInputFields();

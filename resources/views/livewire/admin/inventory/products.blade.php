@@ -121,9 +121,13 @@
                             <input type="text" required class="form-control" placeholder="{{ __('main.enter_product_name') }}" wire:model="name">
                             @error('name') <span class="error text-danger">{{ $message }}</span>@enderror
                         </div>
-                        <div class="mb-3">
+                         @php
+                            $pdtCount = \App\Models\Product::count();
+                            $itemNum = str_pad($pdtCount+1, 3, '0', STR_PAD_LEFT);
+                            @endphp
+                        <div class="mb-3" style="display:none;">
                             <label class="form-label">{{ __('main.item_code') }}</label>
-                            <input type="text" required class="form-control" placeholder="{{ __('main.enter_item_code') }}" wire:model="item_code">
+                            <input type="text" required class="form-control" placeholder="{{ __('main.enter_item_code') }}"  wire:model="item_code">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('main.stitching_cost') }} <span class="text-danger">*</span> </label>

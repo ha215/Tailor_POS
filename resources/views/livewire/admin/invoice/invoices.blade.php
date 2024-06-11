@@ -552,7 +552,53 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                             @php
+                            $Custattributes = \App\Models\MeasurementAttribute::where('is_active',1)->latest()->get();
+                            @endphp
+                            <div class="card-body pt-0">
+                                <div class="row g-3">
+                                    
+                                    @if ($Custattributes && count($Custattributes) > 0)
+                                        @foreach ($Custattributes as $item)
+                                            <div class="col-lg-6 col-12">
+                                                <div class="mb-0">
+                                                    <div class="input-group">
+                                                        <span
+                                                            class="input-group-text col-6">{{ $item->name ?? '' }}</span>
+                                                        <input class="form-control col-6" type="number"
+                                                            placeholder="{{ __('main.enter_value') }}"
+                                                            wire:model="userattributes.{{ $item->id }}" />
+                                                        
+                                                        </div>
+                                                    @error('userattributes.' . $item->id)
+                                                        <span class="text-danger">The {{ $item->attribute->name ?? '' }}
+                                                            field is required</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3" >
+                                        
+                                        <select  class="form-select" wire:model="unit.{{ $item->id }}">
+                                            <option value="">{{ __('main.select_unit') }}
+                                            </option>
+                                            <option value="1">{{ __('main.inches') }}</option>
+                                            <option value="2">{{ __('main.cm') }} </option>
+                                            <option value="3">{{ __('main.mtr') }}</option>
+                                            <option value="4">{{ __('main.yrd') }}</option>
+                                            <option value="5">{{ __('main.ft') }}</option>
+                                        </select>
+                                        @error('unit')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                            
+                                        @endforeach
+                                        
+                                    @endif
+                                </div>
+                            </div>
+                        
+                        
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button"
