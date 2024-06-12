@@ -10,6 +10,7 @@ use Image;
 use Auth;
 use App\Models\Translation;
 use App\Models\Measurement;
+use Illuminate\Http\Request;
 
 class Products extends Component
 {
@@ -33,94 +34,88 @@ class Products extends Component
         $this->products = $query->get();
         return view('livewire.admin.inventory.products');
     }
+    public function save(Request $request)
+    {
+        $request->validate([
+            'image' => 'nullable|image',
+            'name' => 'required',
+            'stitching_cost' => 'required|numeric',
+        ]);
 
-    //Save data when product clicks save button
-    public function save() {
-        //If the product did not click on the edit button
-        if($this->editMode == false)
-        {
-            $this->validate([
-                'image' => 'nullable|image',
-                'name'  => 'required',
-                'stitching_cost' => 'required|numeric',
-            ]);
-            $imageurl = null;
-            if($this->image){
-                $default_favicon = $this->image;
-                $input['file'] = time().'.jpg';
-                $destinationPath = public_path('/uploads/product');
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0777, true);
-                }
-                
-                $imgFile = Image::make($this->image->getRealPath());
-                
-                $imgFile->save($destinationPath.'/'.$input['file'],75,'jpg');
-                $imageurl = '/uploads/product/'.$input['file'];
+        $imageurl = null;
+        if ($request->hasFile('image')) {
+            $filename = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+            $destinationPath = public_path('uploads/product');
+
+            // Ensure the destination directory exists
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
             }
-            $pdtCount = Product::count();
-            $itemNum = str_pad($pdtCount+1, 3, '0', STR_PAD_LEFT);
-            $product = Product::create([
-                'name'  => $this->name,
-                'stitching_cost' => $this->stitching_cost,
-                'is_active' => $this->is_active,
-                'is_featured' => $this->is_featured,
-                'image' => $imageurl,
-                'description' => $this->description,
-                'created_by' => Auth::user()->id,
-                'item_code' => $itemNum
-            ]);
-            $this->products = Product::latest()->get();
-            $this->resetInputFields();
-            $this->emit('closemodal');
-            $this->dispatchBrowserEvent(
-                'alert', ['type' => 'success',  'message' => 'Product Created Successfully!']);
+
+            // Move the uploaded file to the destination directory
+            $request->file('image')->move($destinationPath, $filename);
+
+            // Generate the URL for the stored image
+            $imageurl = '/uploads/product/' . $filename;
         }
-        //If product clicked on the edit button
-        else if($this->editMode == true && $this->product)
-        {
-            $this->validate([
-                'image' => 'nullable|image',
-                'name'  => 'required',
-                'stitching_cost' => 'required|numeric',
-            ]);
-            $imageurl = null;
-            if($this->image){
-                try{
-                    $path = $this->product->image;
-                    if (file_exists(public_path($path))) {
-                        unlink(public_path($path));
-                    }
-                }
-                catch(\Exception $e)
-                {   }
-                $default_favicon = $this->image;
-                $input['file'] = time().'.jpg';
-                $destinationPath = public_path('/uploads/product');
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0777, true);
-                }
-                $imgFile = Image::make($this->image->getRealPath());
-                $imgFile->save($destinationPath.'/'.$input['file'],75,'jpg');
-                $imageurl = '/uploads/product/'.$input['file'];
-                $this->product->image = $imageurl;
+
+        $pdtCount = Product::count();
+        $itemNum = str_pad($pdtCount + 1, 3, '0', STR_PAD_LEFT);
+        Product::create([
+            'name' => $request->get('name'),
+            'stitching_cost' => $request->get('stitching_cost'),
+            'is_active' => $request->get('is_active') ? 1 : 0,
+            'is_featured' => $request->get('is_featured') ? 1 : 0,
+            'image' => $imageurl,
+            'description' => $request->get('description'),
+            'created_by' => Auth::user()->id,
+            'item_code' => $itemNum
+        ]);
+
+        return redirect()->back()->with('success', 'Product Created Successfully!');
+    }
+    public function update(Request $request)
+    {
+        $request->validate([
+            'image' => 'nullable|image',
+            'name' => 'required',
+            'stitching_cost' => 'required|numeric',
+        ]);
+
+        $product = Product::find($request->input('editId'));
+
+        $imageurl = $product->image;
+        if ($request->hasFile('image')) {
+            if (file_exists(public_path($product->image))) {
+                unlink(public_path($product->image));
             }
-            $this->product->name = $this->name;
-            $this->product->stitching_cost = $this->stitching_cost;
-            $this->product->is_active = $this->is_active ?? 0;
-            $this->product->is_featured = $this->is_featured ?? 0;
-            $this->product->description = $this->description;
-            $this->product->item_code = $this->item_code;
-            $this->product->save();
-            $this->editMode = false;
-            $this->products = Product::latest()->get();
-            $this->resetInputFields();
-            $this->emit('closemodal');
-            $this->dispatchBrowserEvent(
-                'alert', ['type' => 'success',  'message' => 'Product Updated Successfully!']);
+
+            $filename = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+            $destinationPath = public_path('uploads/product');
+
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+
+            $request->file('image')->move($destinationPath, $filename);
+
+            $imageurl = '/uploads/product/' . $filename;
         }
+
+        $product->update([
+            'name' => $request->input('name'),
+            'stitching_cost' => $request->input('stitching_cost'),
+            'is_active' => $request->input('is_active') ? 1 : 0,
+            'is_featured' => $request->input('is_featured') ? 1 : 0,
+            'image' => $imageurl,
+            'description' => $request->input('description'),
+            'item_code' => $request->input('item_code')
+        ]);
+
+        return redirect()->back()->with('success', 'Product Updated Successfully!');
     }
 
+  
     //Reset Input Fields
     public function resetInputFields()
     {
@@ -136,6 +131,12 @@ class Products extends Component
         $this->editMode = false;
         $this->product=null;
     }
+    public function pdtedit($id)
+    {
+        $product = Product::find($id);
+
+        return response()->json($product);
+    }
 
     //If product clicked on the edit button get item id and initialize input variables with it.
     public function edit($id)
@@ -150,14 +151,7 @@ class Products extends Component
         $this->description = $this->product->description;
         $this->item_code = $this->product->item_code;
     }
-    public function addMeasurements($id)
-    {
-        $this->pdtEdit = true;
-        $this->resetErrorBag();
-        $this->product_id = $id;
-        
-    }
-
+    
     //Toggle product active status
     public function toggle($id)
     {
@@ -165,26 +159,6 @@ class Products extends Component
         $product->is_active = !($product->is_active);
         $product->save();
     }
-    public function saveMeasurements()
-    {
-        if($this->selected_attributes) {
-            foreach($this->selected_attributes as $key => $value)
-            {
-                if($value === true)
-                {
-                    $mesurements = Measurement::create([
-                        'products_id'=>$measurement->id,
-                        'measurement_attributes_id'=>$key,
-                        'created_at'=>\Carbon\Carbon::now()
-                    ]);
-                }
-            }
-        }
-
-        session()->flash('message', 'Measurement saved successfully.');
-        $this->emit('closemodal');
-        // Close the modal
-        //$this->dispatchBrowserEvent('closeModal');
-    }
+    
 
 }

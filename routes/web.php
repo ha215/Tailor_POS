@@ -54,6 +54,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'installed',UpdateM
     /* inventory */
     Route::group(['prefix' => 'inventory/'], function () {
     Route::get('product', \App\Http\Livewire\Admin\Inventory\Products::class)->name('admin.product');
+    Route::post('/products/save', [\App\Http\Livewire\Admin\Inventory\Products::class, 'save'])->name('products.save');
+    Route::get('/products/{id}/edit', [\App\Http\Livewire\Admin\Inventory\Products::class, 'pdtedit'])->name('products.edit');
+    Route::post('/products/update', [\App\Http\Livewire\Admin\Inventory\Products::class, 'update'])->name('products.update');
     });
 
     /* online orders */

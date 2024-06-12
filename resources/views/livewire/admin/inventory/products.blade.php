@@ -10,7 +10,7 @@
                                     <h5 class="mb-0">{{ __('main.products') }}</h5>
                                 </div>
                                 <div class="col-auto mb-4">
-                                    <a data-bs-toggle="modal" data-bs-target="#addproduct" class="btn btn-primary px-2" type="button" wire:click="resetInputFields">
+                                    <a data-bs-toggle="modal" data-bs-target="#addproduct" class="btn btn-primary px-2" type="button" >
                                         <i class="fa fa-plus me-2"></i>{{ __('main.add_new_product') }}
                                     </a>
                                 </div>
@@ -76,18 +76,7 @@
                                             
                                         </td>
                                         <td>
-                                            @if(Auth::user()->user_type == 3)
-                                            @if(Auth::user()->id == $row->created_by)
-                                            <a wire:click="edit({{$row->id}})" data-bs-toggle="modal" data-bs-target="#editproduct" class="btn btn-custom-secondary btn-sm px-2" type="button">
-                                                <i class="fa fa-pencil-square-o me-2"></i>{{ __('main.edit') }}
-                                            </a>
-                                            @endif
-                                            @endif
-                                            @if(Auth::user()->user_type == 2)
-                                            <a wire:click="edit({{$row->id}})" data-bs-toggle="modal" data-bs-target="#editproduct" class="btn btn-custom-secondary btn-sm px-2" type="button">
-                                                <i class="fa fa-pencil-square-o me-2"></i>{{ __('main.edit') }}
-                                            </a>
-                                            @endif
+                                             <button class="btn btn-primary edit-product" data-id="{{ $row->id }}" data-bs-toggle="modal" data-bs-target="#editproduct" class="btn btn-primary px-2"><i class="fa fa-pencil-square-o me-2"></i>{{ __('main.edit') }}</button>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -103,22 +92,23 @@
             </div>
         </div>
     </div>
-    <div wire:ignore.self class="modal fade" id="addproduct" tabindex="-1" role="dialog" aria-hidden="true">
+    <div  class="modal fade" id="addproduct" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ __('main.add_product') }} </h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form>
+                <form enctype="multipart/form-data" action="{{ route('products.save') }}" method="POST" >
+                     {!! csrf_field() !!}
                     <div class="modal-body pb-1">
                         <div class="mb-3">
                             <label class="form-label">{{ __('main.product_image') }} (300X300 px)</label>
-                            <input type="file" class="form-control" wire:model="image" id="upload({{$i}})" />
+                            <input type="file" class="form-control" name="image" id="" />
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('main.product_name') }} <span class="text-danger">*</span> </label>
-                            <input type="text" required class="form-control" placeholder="{{ __('main.enter_product_name') }}" wire:model="name">
+                            <input type="text" required class="form-control" placeholder="{{ __('main.enter_product_name') }}" name="name">
                             @error('name') <span class="error text-danger">{{ $message }}</span>@enderror
                         </div>
                          @php
@@ -127,27 +117,27 @@
                             @endphp
                         <div class="mb-3" style="display:none;">
                             <label class="form-label">{{ __('main.item_code') }}</label>
-                            <input type="text" required class="form-control" placeholder="{{ __('main.enter_item_code') }}"  wire:model="item_code">
+                            <input type="text"  class="form-control" placeholder="{{ __('main.enter_item_code') }}"  name="item_code">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('main.stitching_cost') }} <span class="text-danger">*</span> </label>
                             <div class="input-group">
-                                <input class="form-control" required type="number" placeholder="{{ __('main.enter_amount') }}" wire:model="stitching_cost">
+                                <input class="form-control" required type="number" placeholder="{{ __('main.enter_amount') }}" name="stitching_cost">
                                 <span class="input-group-text">{{getCurrency()}} / Nos</span>
                             </div>
                             @error('stitching_cost') <span class="error text-danger">{{ $message }}</span>@enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('main.description') }} </label>
-                                <textarea class="form-control" required type="number" placeholder="{{ __('main.description') }}" wire:model="description" rows="5"></textarea>
+                                <textarea class="form-control"  type="number" placeholder="{{ __('main.description') }}" name="description" rows="5"></textarea>
                         </div>
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-4" style="display:none;">
                                 <div class="mb-3">
                                     <label class="form-label">{{ __('main.is_featured') }}</label>
                                     <div class="media-body switch-lg">
                                         <label class="switch" id="feature">
-                                            <input id="feature" type="checkbox" wire:model="is_featured" /><span class="switch-state"></span>
+                                            <input id="feature" type="checkbox" name="is_featured" /><span class="switch-state"></span>
                                         </label>
                                     </div>
                                 </div>
@@ -157,7 +147,7 @@
                                     <label class="form-label">{{ __('main.is_active') }}</label>
                                     <div class="media-body switch-lg">
                                         <label class="switch" id="active">
-                                            <input id="active" type="checkbox" wire:model="is_active" /><span class="switch-state"></span>
+                                            <input id="active" type="checkbox" name="is_active" /><span class="switch-state"></span>
                                         </label>
                                     </div>
                                 </div>
@@ -166,64 +156,65 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">{{ __('main.cancel') }}</button>
-                        <button class="btn btn-primary" type="submit" wire:click.prevent="save">{{ __('main.submit') }}</button>
+                        <button class="btn btn-primary" type="submit" >{{ __('main.submit') }}</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <div wire:ignore.self class="modal fade" id="editproduct" tabindex="-1" role="dialog" aria-hidden="true">
+    <div  class="modal fade" id="editproduct" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ __('main.edit_product') }} </h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form>
+                <form enctype="multipart/form-data" action="{{ route('products.update') }}" method="POST" >{!! csrf_field() !!}
                     <div class="modal-body pb-1">
                         <div class="mb-3">
                             <label class="form-label">{{ __('main.product_image') }} (300X300 px)</label>
-                            <input type="file" class="form-control" wire:model="image" id="{{$i}}" />
+                            <input type="file" class="form-control" name="image" id="" />
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('main.product_name') }} <span class="text-danger">*</span> </label>
-                            <input type="text" required class="form-control" placeholder="{{ __('main.enter_product_name') }}" wire:model="name">
+                            <input type="text" required class="form-control" placeholder="{{ __('main.enter_product_name') }}" name="name" id="name">
                             @error('name') <span class="error text-danger">{{ $message }}</span>@enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('main.item_code') }}</label>
-                            <input type="text" required class="form-control" placeholder="{{ __('main.enter_item_code') }}" wire:model="item_code">
+                            <input type="text" required class="form-control" placeholder="{{ __('main.enter_item_code') }}" name="item_code" id="item_code">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('main.stitching_cost') }} <span class="text-danger">*</span> </label>
                             <div class="input-group">
-                                <input class="form-control" required type="number" placeholder="{{ __('main.enter_amount') }}" wire:model="stitching_cost">
+                                <input class="form-control" required type="number" placeholder="{{ __('main.enter_amount') }}" name="stitching_cost" id="stitching_cost">
+                                 <input class="form-control"  type="hidden" placeholder="" name="editId" id="editId">
                                 <span class="input-group-text">{{getCurrency()}} / Nos</span>
                             </div>
                             @error('stitching_cost') <span class="error text-danger">{{ $message }}</span>@enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">{{ __('main.description') }}  </label>
-                                <textarea class="form-control" required type="number" placeholder="{{ __('main.description') }}" wire:model="description" rows="5"></textarea>
+                                <textarea class="form-control"  type="number" placeholder="{{ __('main.description') }}" name="description" id="description" rows="5"></textarea>
                         </div>
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-4" style="display:none;">
                                 <div class="mb-3">
                                     <label class="form-label">{{ __('main.is_featured') }}</label>
                                     <div class="media-body switch-lg">
                                         <label class="switch" id="feature">
-                                            <input id="feature" type="checkbox" wire:model="is_featured" /><span class="switch-state"></span>
+                                            <input id="feature" type="checkbox" name="is_featured" id="is_featured" /><span class="switch-state"></span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-4" style="display:none;">
                                 <div class="mb-0">
                                     <label class="form-label">{{ __('main.is_active') }}</label>
                                     <div class="media-body switch-lg">
                                         <label class="switch" id="active">
-                                            <input id="active" type="checkbox" wire:model="is_active" /><span class="switch-state"></span>
+                                            <input id="active" type="checkbox" name="is_active" id="is_active" /><span class="switch-state"></span>
                                         </label>
                                     </div>
                                 </div>
@@ -233,12 +224,43 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">{{ __('main.cancel') }}</button>
-                        <button class="btn btn-primary" type="submit" wire:click.prevent="save">{{ __('main.submit') }}</button>
+                        <button class="btn btn-primary" type="submit" >{{ __('main.submit') }}</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+@push('js')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.edit-product').on('click', function() {
+            var productId = $(this).data('id');
 
+            // Fetch the product details using AJAX
+            $.ajax({
+                url: '/admin/inventory/products/' + productId + '/edit',
+                type: 'GET',
+                success: function(response) {
+                    $('#editId').val(response.id);
+                    $('#name').val(response.name);
+                    $('#stitching_cost').val(response.stitching_cost);
+                    $('#item_code').val(response.item_code);
+                    $('#description').val(response.description);
+                    $('#is_featured').prop('checked', response.is_featured);
+                   if(response.is_active == 0){
+                       $('#is_active').prop('checked', false); 
+                   }else{
+                       $('#is_active').prop('checked', true);
+                   }
+                    
+                    $('#editproduct').modal('show');
+                }
+            });
+        });
+    });
+</script>
+
+@endpush
     
 </div>

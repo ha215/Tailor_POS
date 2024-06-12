@@ -49,7 +49,7 @@
                                        
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-12">
+                                    <div class="col-lg-4 col-12" style="display:none;">
                                         <div class="mb-0">
                                             <label class="form-label">{{ __('main.company_logo') }} (150X150 px) </label>
                                             <input type="file" class="form-control" wire:model="logo" />
