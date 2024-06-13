@@ -75,7 +75,8 @@ class Payments extends Component
     {
         $this->validate([
             'paid_amount'   => 'required',
-            'pay_mode'  => 'required'
+            'pay_mode'  => 'required',
+            'status'   => 'required'
         ]);
         $Inpaid_amount = InvoicePayment::where('invoice_id',$this->payment->id)->sum('paid_amount');
         $balance = $this->payment->total - $Inpaid_amount;

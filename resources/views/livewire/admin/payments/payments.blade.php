@@ -233,6 +233,8 @@
                                     <div class="">
                                         <label class="form-label">{{ __('main.status') }}</label>
                                         <select required class="form-select" wire:model="status">
+                                            <option value="">--Select--</option>
+                                            <option value="2">{{ __('main.processing') }}</option>
                                             <option value="3">{{ __('main.ready_to_deliver') }}</option>
                                             <option value="4">{{ __('main.delivered') }}</option>
                                         </select>
