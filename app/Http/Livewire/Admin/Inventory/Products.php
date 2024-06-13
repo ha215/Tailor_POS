@@ -86,10 +86,6 @@ class Products extends Component
 
         $imageurl = $product->image;
         if ($request->hasFile('image')) {
-            if (file_exists(public_path($product->image))) {
-                unlink(public_path($product->image));
-            }
-
             $filename = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
             $destinationPath = public_path('uploads/product');
 
