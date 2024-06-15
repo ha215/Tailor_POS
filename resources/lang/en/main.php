@@ -670,4 +670,5 @@ return [
     'message_print' => 'After Preferred Delivery Date cloths will sell to another person',
     'customer_name' => 'Customer Name',
     'customer_num' => 'Customer Number',
+    'item_delivered' => 'Is it Mark as Delivered?',
 ];

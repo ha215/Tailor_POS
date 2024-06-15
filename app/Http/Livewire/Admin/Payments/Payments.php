@@ -57,12 +57,23 @@ class Payments extends Component
         $this->payment = Invoice::find($id);
     }
 
-    //delete payments
+    //status change payments
     public function delete()
     {
         if($this->payment)
         {
             $this->payment->status = 3; //ready to deliver
+            $this->payment->save();
+            $this->dispatchBrowserEvent(
+                'alert', ['type' => 'success',  'message' => 'Status Updated!']);
+            $this->emit('closemodal');
+        }
+    }
+    public function delivered()
+    {
+        if($this->payment)
+        {
+            $this->payment->status = 4; //ready to deliver
             $this->payment->save();
             $this->dispatchBrowserEvent(
                 'alert', ['type' => 'success',  'message' => 'Status Updated!']);

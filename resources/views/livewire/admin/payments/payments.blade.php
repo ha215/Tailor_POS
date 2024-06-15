@@ -115,6 +115,14 @@
                                                     <i class="fa fa-check-circle" ></i>{{ __('main.ready') }}
                                                 </a> &nbsp;
                                                 @endif
+                                                @if($item->status != 4)
+                                                <a data-bs-toggle="modal"
+                                                    wire:click="deleteConfirm({{ $item->id }})"
+                                                    data-bs-target="#confirmDelivered"
+                                                    class="btn btn-success btn-sm px-2" type="button">
+                                                    <i class="fa fa-check-circle" ></i>{{ __('main.delivered') }}
+                                                </a> &nbsp;
+                                                @endif
                                                 <a href="{{ route('admin.print_voucher', $item->id) }}"
                                                     class="btn btn-success btn-sm px-2" type="button"
                                                     target="_blank">
@@ -285,6 +293,30 @@
                             data-bs-dismiss="modal">{{ __('main.cancel') }}</button>
                         <button class="btn btn-primary" type="submit"
                             wire:click.prevent="delete">{{ __('main.confirm') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirmDelivered" tabindex="-1" role="dialog" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ __('main.status') }} </h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form>
+                    <div class="modal-body text-center">
+                        <div class="pb-4 pt-3">
+                            <h5 class="mb-3">{{ __('main.are_you_sure') }}</h5>
+                            <p class="mb-0 text-sm">{{ __('main.item_delivered') }}</p>
+                        </div>
+                    </div>
+                    <div class="text-center pb-4">
+                        <button class="btn btn-secondary me-2" type="button"
+                            data-bs-dismiss="modal">{{ __('main.cancel') }}</button>
+                        <button class="btn btn-primary" type="submit"
+                            wire:click.prevent="delivered">{{ __('main.confirm') }}</button>
                     </div>
                 </form>
             </div>
